@@ -1,0 +1,18 @@
+{
+  "name": "@horyus/t721-server",
+  "private": true,
+  "version": "1.0.0",
+  "description": "t721-server - Server to store contract data and events for ticket72",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mortimr/t721-server.git"
+  },
+  "author": "Iulian Rotaru",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mortimr/t721-server/issues"
+  },
+  "homepage": "https://github.com/mortimr/t721-server#readme"
+}
