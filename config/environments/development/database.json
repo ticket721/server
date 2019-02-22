@@ -1,17 +1,17 @@
 {
-  "defaultConnection": "default",
-  "connections": {
-    "default": {
-      "connector": "strapi-hook-bookshelf",
-      "settings": {
-        "client": "postgres",
-        "host": "127.0.0.1",
-        "port": 5432,
-        "database": "t721",
-        "username": "admin",
-        "password": "pass"
-      },
-      "options": {}
+    "defaultConnection": "default",
+    "connections": {
+        "default": {
+            "connector": "strapi-hook-bookshelf",
+            "settings": {
+                "client": "postgres",
+                "host": "127.0.0.1",
+                "port": 5432,
+                "database": "t721",
+                "username": "admin",
+                "password": "pass"
+            },
+            "options": {}
+        }
     }
-  }
 }
