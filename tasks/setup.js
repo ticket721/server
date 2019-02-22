@@ -8,7 +8,9 @@ const tsConfig = require(from_current('./tsconfig.json'));
 
 module.exports.tsc_hooks = async function tsc_hooks() {
     signale.info('Transpiling hooks');
-    return gulp.src(from_current('./hooks_sources') + '/**/*.ts')
+    return gulp.src([
+        from_current('./hooks_sources') + '/**/*.ts',
+        '!' + from_current('./hooks_sources') + '/**/*.test.ts'])
         .pipe(ts(tsConfig.compilerOptions))
         .pipe(gulp.dest(from_current('./hooks')));
 };

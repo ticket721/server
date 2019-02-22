@@ -6,6 +6,10 @@
     "main": "./server.js",
     "scripts": {
         "setup": "cd admin && npm run setup",
+        "test:jest": "jest --coverage",
+        "test:editorconfig": "editorconfig-cli",
+        "test:lint": "tslint --project .",
+        "coverage:upload": "cat coverage/lcov.info | coveralls",
         "start": "node server.js",
         "strapi": "node_modules/strapi/bin/strapi.js",
         "lint": "node_modules/.bin/eslint api/**/*.js config/**/*.js plugins/**/*.js",
@@ -31,10 +35,13 @@
     "homepage": "https://github.com/ticket721/server#readme",
     "dependencies": {
         "@htmlacademy/editorconfig-cli": "^1.0.0",
+        "@types/jest": "^24.0.6",
         "@types/node": "^11.9.4",
+        "coveralls": "^3.0.3",
         "dockerode": "^2.5.8",
         "gulp-typescript": "^5.0.0",
         "husky": "^1.3.1",
+        "jest": "^24.1.0",
         "knex": "latest",
         "link-module-alias": "^1.1.6",
         "linted": "^1.0.5",
@@ -46,6 +53,7 @@
         "strapi": "3.0.0-alpha.24.1",
         "strapi-hook-bookshelf": "3.0.0-alpha.24.1",
         "strapi-hook-knex": "3.0.0-alpha.24.1",
+        "ts-jest": "^24.0.0",
         "tslint": "^5.12.1",
         "typescript": "^3.3.3333"
     },

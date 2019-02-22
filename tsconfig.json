@@ -5,14 +5,21 @@
         "sourceMap": false,
         "outDir": "./hooks",
         "rootDir": "./hooks_sources",
-        "types": []
+        "types": [
+            "jest",
+            "node"
+        ],
+        "lib": [
+            "dom",
+            "es2015"
+        ]
     },
     "exclude": [
         "node_modules",
-        "node_modules/@types/bluebird/index.d.ts"
+        "./hooks_sources/test/test.test.ts"
     ],
     "include": [
         "./hooks_sources/typings.d.ts",
-        "./hooks_sources/**/*.ts"
+        "./hooks_sources/**/index.ts"
     ]
 }
