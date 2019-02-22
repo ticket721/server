@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "sourceMap": false,
+        "outDir": "./hooks",
+        "rootDir": "./hooks_sources",
+        "types": []
+    },
+    "exclude": [
+        "node_modules",
+        "node_modules/@types/bluebird/index.d.ts"
+    ],
+    "include": [
+        "./hooks_sources/typings.d.ts",
+        "./hooks_sources/**/*.ts"
+    ]
+}

@@ -79,8 +79,12 @@ module.exports.postgres_development = async function postgres_development() {
 async function clean_postgres() {
     signale.info(`docker: removing container ${CONTAINER_NAME}`);
     const container = await Docker.getContainer(CONTAINER_NAME);
-    await container.kill();
-    signale.success(`docker: removed container ${CONTAINER_NAME}`);
+    try {
+        await container.kill();
+        signale.success(`docker: removed container ${CONTAINER_NAME}`);
+    } catch (e) {
+        signale.success(`docker: container not found`);
+    }
 }
 
 async function clean_portalize() {
