@@ -1,5 +1,5 @@
 # server
-Server to store contract data and events for ticket721## Status
+Server to store contract data and events for ticket721
 
 ## Status
 
