@@ -1,11 +1,25 @@
+export {};
+declare global {
+    namespace NodeJS {
+        interface Global {
+            td: any;
+        }
+    }
+}
+
 // tslint:disable-next-line
 const hook = require('./index');
 
+const td = global.td;
+
 describe('strapi-hook-test', (): void => {
 
-    test('Dummy test', async (done: jest.DoneCallback): Promise<void> => {
+    test('Dummy test', (): void => {
         const resolved_hook = hook();
-        resolved_hook.initialize(done);
+        const func = td.func();
+        resolved_hook.initialize(func);
+
+        td.verify(func());
     });
 
 });

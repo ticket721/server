@@ -53,6 +53,8 @@
         "strapi": "3.0.0-alpha.24.1",
         "strapi-hook-bookshelf": "3.0.0-alpha.24.1",
         "strapi-hook-knex": "3.0.0-alpha.24.1",
+        "testdouble": "^3.10.0",
+        "testdouble-jest": "^2.0.0",
         "ts-jest": "^24.0.0",
         "tslint": "^5.12.1",
         "typescript": "^3.3.3333"
