@@ -1,0 +1,35 @@
+{
+    "connection": "default",
+    "collectionName": "address",
+    "info": {
+        "name": "address",
+        "description": "Represents an Ethereum address"
+    },
+    "options": {
+        "increments": true,
+        "timestamps": true,
+        "comment": ""
+    },
+    "attributes": {
+        "address": {
+            "default": "",
+            "maxLength": 42,
+            "unique": true,
+            "minLength": 42,
+            "type": "string",
+            "required": true
+        },
+        "tickets": {
+            "collection": "ticket",
+            "via": "owner"
+        },
+        "actions_by": {
+            "collection": "action",
+            "via": "by"
+        },
+        "actions_to": {
+            "collection": "action",
+            "via": "to"
+        }
+    }
+}
