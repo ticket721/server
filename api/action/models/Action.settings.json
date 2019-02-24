@@ -1,0 +1,36 @@
+{
+    "connection": "default",
+    "collectionName": "action",
+    "info": {
+        "name": "action",
+        "description": "An action is and EVM Event"
+    },
+    "options": {
+        "increments": true,
+        "timestamps": true,
+        "comment": ""
+    },
+    "attributes": {
+        "by": {
+            "model": "address",
+            "via": "actions_by"
+        },
+        "to": {
+            "model": "address",
+            "via": "actions_to"
+        },
+        "on_ticket": {
+            "model": "ticket",
+            "via": "actions"
+        },
+        "action_type": {
+            "default": "",
+            "type": "enumeration",
+            "required": true,
+            "enum": [
+                "mint",
+                "buy"
+            ]
+        }
+    }
+}

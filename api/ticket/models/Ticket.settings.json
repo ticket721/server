@@ -1,0 +1,34 @@
+{
+    "connection": "default",
+    "collectionName": "ticket",
+    "info": {
+        "name": "ticket",
+        "description": "An ERC721 asset"
+    },
+    "options": {
+        "increments": true,
+        "timestamps": true,
+        "comment": ""
+    },
+    "attributes": {
+        "ticket_id": {
+            "default": "",
+            "unique": true,
+            "min": 1,
+            "type": "integer",
+            "required": true
+        },
+        "owner": {
+            "model": "address",
+            "via": "tickets"
+        },
+        "event": {
+            "model": "event",
+            "via": "tickets"
+        },
+        "actions": {
+            "collection": "action",
+            "via": "on_ticket"
+        }
+    }
+}

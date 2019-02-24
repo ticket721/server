@@ -1,0 +1,27 @@
+{
+    "connection": "default",
+    "collectionName": "event",
+    "info": {
+        "name": "event",
+        "description": "Event is an ethereum smart contract"
+    },
+    "options": {
+        "increments": true,
+        "timestamps": true,
+        "comment": ""
+    },
+    "attributes": {
+        "address": {
+            "model": "address"
+        },
+        "tickets": {
+            "collection": "ticket",
+            "via": "event"
+        },
+        "name": {
+            "default": "",
+            "type": "string",
+            "required": true
+        }
+    }
+}

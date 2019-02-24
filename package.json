@@ -76,7 +76,9 @@
         "./*.js",
         "./config/*.json",
         "./hooks_sources/**/*.ts",
-        "./tasks/**/*.js"
+        "./tasks/**/*.js",
+        "./api/**/*.json",
+        "./api/**/*.js"
     ],
     "husky": {
         "hooks": {
