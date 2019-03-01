@@ -21,7 +21,7 @@
   "_resolved": "https://registry.npmjs.org/strapi-plugin-content-manager/-/strapi-plugin-content-manager-3.0.0-alpha.24.1.tgz",
   "_shasum": "23cab706a697814b63820deeecf96e22e378137d",
   "_spec": "strapi-plugin-content-manager@3.0.0-alpha.24.1",
-  "_where": "/Users/mortimr/Horyus/t721/_server",
+  "_where": "/Users/mortimr/Horyus/t721/server",
   "author": {
     "name": "Strapi team",
     "email": "hi@strapi.io",

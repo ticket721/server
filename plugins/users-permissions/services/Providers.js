@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-// Public node modules.
+// Public eth_node modules.
 const _ = require('lodash');
 const request = require('request');
 

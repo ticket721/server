@@ -104,7 +104,7 @@ const SOCIAL_LINKS = [
   },
   {
     name: 'Reddit',
-    link: 'https://www.reddit.com/r/node/search?q=strapi',
+    link: 'https://www.reddit.com/r/eth_node/search?q=strapi',
   },
   {
     name: 'Stack Overflow',

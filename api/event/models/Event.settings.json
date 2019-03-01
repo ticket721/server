@@ -1,27 +1,37 @@
 {
-    "connection": "default",
-    "collectionName": "event",
-    "info": {
-        "name": "event",
-        "description": "Event is an ethereum smart contract"
+  "connection": "default",
+  "collectionName": "event",
+  "info": {
+    "name": "event",
+    "description": "Event is an ethereum smart contract"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "address": {
+      "required": true,
+      "model": "address"
     },
-    "options": {
-        "increments": true,
-        "timestamps": true,
-        "comment": ""
+    "tickets": {
+      "collection": "ticket",
+      "via": "event"
     },
-    "attributes": {
-        "address": {
-            "model": "address"
-        },
-        "tickets": {
-            "collection": "ticket",
-            "via": "event"
-        },
-        "name": {
-            "default": "",
-            "type": "string",
-            "required": true
-        }
+    "name": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "required": true,
+      "model": "address",
+      "via": "events"
+    },
+    "eventcontract": {
+      "model": "eventcontract",
+      "via": "events"
     }
+  }
 }
