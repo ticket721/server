@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/marketers",
+      "handler": "Marketer.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/marketers/count",
+      "handler": "Marketer.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/marketers/:id",
+      "handler": "Marketer.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/marketers",
+      "handler": "Marketer.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/marketers/:id",
+      "handler": "Marketer.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/marketers/:id",
+      "handler": "Marketer.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

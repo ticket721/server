@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/networks",
+      "handler": "Network.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/networks/count",
+      "handler": "Network.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/networks/:id",
+      "handler": "Network.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/networks",
+      "handler": "Network.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/networks/:id",
+      "handler": "Network.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/networks/:id",
+      "handler": "Network.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

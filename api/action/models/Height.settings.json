@@ -1,0 +1,18 @@
+{
+  "connection": "default",
+  "collectionName": "height",
+  "info": {
+    "name": "height",
+    "description": "Last fetched height of action_type"
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "height": {
+      "default": "",
+      "type": "integer",
+      "required": true
+    }
+  }
+}

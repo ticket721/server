@@ -1,0 +1,64 @@
+{
+  "connection": "default",
+  "collectionName": "approver",
+  "info": {
+    "name": "approver",
+    "description": "Event Approver Modules sources and informations"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "sources": {
+      "default": "",
+      "type": "text",
+      "required": true
+    },
+    "build_arguments": {
+      "default": "",
+      "type": "json",
+      "required": true
+    },
+    "action_arguments": {
+      "default": "",
+      "type": "json",
+      "required": true
+    },
+    "symbol": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "t721_version": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "solidity_version": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "binary": {
+      "default": "",
+      "type": "text",
+      "required": true
+    },
+    "eventcontracts": {
+      "collection": "eventcontract",
+      "via": "approver"
+    },
+    "abi": {
+      "default": "",
+      "type": "json",
+      "required": true
+    }
+  }
+}

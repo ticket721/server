@@ -1,0 +1,40 @@
+{
+    "connection": "default",
+    "collectionName": "sale",
+    "info": {
+        "name": "sale",
+        "description": "Ticket being on sale"
+    },
+    "options": {
+        "increments": true,
+        "timestamps": true,
+        "comment": ""
+    },
+    "attributes": {
+        "ticket": {
+            "model": "ticket",
+            "via": "sale",
+            "required": true
+        },
+        "end_block": {
+            "default": "",
+            "type": "integer",
+            "required": true
+        },
+        "begin_block": {
+            "default": "",
+            "type": "integer",
+            "required": true
+        },
+        "status": {
+            "default": "",
+            "type": "enumeration",
+            "enum": [
+                "open",
+                "closed",
+                "ended"
+            ],
+            "required": true
+        }
+    }
+}

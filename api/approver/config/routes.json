@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/approvers",
+      "handler": "Approver.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/approvers/count",
+      "handler": "Approver.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/approvers/:id",
+      "handler": "Approver.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/approvers",
+      "handler": "Approver.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/approvers/:id",
+      "handler": "Approver.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/approvers/:id",
+      "handler": "Approver.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

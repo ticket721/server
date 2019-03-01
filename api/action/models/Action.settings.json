@@ -13,11 +13,13 @@
     "attributes": {
         "by": {
             "model": "address",
-            "via": "actions_by"
+            "via": "actions_by",
+            "required": true
         },
         "to": {
             "model": "address",
-            "via": "actions_to"
+            "via": "actions_to",
+            "required": true
         },
         "on_ticket": {
             "model": "ticket",
@@ -29,8 +31,25 @@
             "required": true,
             "enum": [
                 "mint",
-                "buy"
+                "sale",
+                "sale_close",
+                "buy",
+                "transfer",
+                "approval",
+                "approval_for_all",
+                "event",
+                "new_admin"
             ]
+        },
+        "infos": {
+            "default": "",
+            "type": "json",
+            "required": true
+        },
+        "block": {
+            "default": "",
+            "type": "integer",
+            "required": true
         }
     }
 }
