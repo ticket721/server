@@ -14,7 +14,15 @@ module.exports.setup_requirements = async function setup_requirements() {
                 file: 'postgres.json',
                 from: 'server'
             })) {
-                throw new Error('Cannot find postgres configuration in portal');
+                throw new Error('Cannot find postgres configuration in portal. Run gulp task "server:setup" first');
+            }
+            if (!Portalize.get.requires({
+                action: 'add',
+                desc: 'eth_node ready',
+                file: 'eth_node.json',
+                from: 'server'
+            })) {
+                throw new Error('Cannot find eth_node configuration in portal. Run gulp task "server:setup" first');
             }
 
     }

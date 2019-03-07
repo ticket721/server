@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/eventcontracts",
+      "handler": "Eventcontract.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/eventcontracts/count",
+      "handler": "Eventcontract.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/eventcontracts/:id",
+      "handler": "Eventcontract.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/eventcontracts",
+      "handler": "Eventcontract.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/eventcontracts/:id",
+      "handler": "Eventcontract.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/eventcontracts/:id",
+      "handler": "Eventcontract.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

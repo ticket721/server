@@ -66,7 +66,7 @@ async function write_config() {
         desc: 'postgres ready'
     });
 
-    signale.info(`docker: written portalize infos`);
+    signale.success(`docker: written portalize infos`);
 
 }
 

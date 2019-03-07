@@ -13,7 +13,7 @@ module.exports.portalize_requirements = async function portalize_requirements() 
             file: 'network.json',
             from: 'network'
         })) {
-            throw new Error('In development mode, network is expected to have started a local node');
+            throw new Error('In development mode, network is expected to have started a local eth_node');
         }
     }
 

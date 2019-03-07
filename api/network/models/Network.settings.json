@@ -1,0 +1,45 @@
+{
+  "connection": "default",
+  "collectionName": "networks",
+  "info": {
+    "name": "network",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "net_id": {
+      "default": "",
+      "type": "integer",
+      "required": true
+    },
+    "contracts": {
+      "default": "",
+      "type": "json",
+      "required": true
+    },
+    "genesis_block_hash": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "node_host": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "node_port": {
+      "default": "",
+      "type": "integer",
+      "required": true
+    },
+    "node_connection_protocol": {
+      "default": "",
+      "type": "string",
+      "required": true
+    }
+  }
+}

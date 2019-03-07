@@ -1,0 +1,66 @@
+{
+  "connection": "default",
+  "collectionName": "eventcontract",
+  "info": {
+    "name": "eventcontract",
+    "description": "Event Contracts supported by the system"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "minter": {
+      "model": "minter",
+      "via": "eventcontracts"
+    },
+    "marketer": {
+      "model": "marketer",
+      "via": "eventcontracts"
+    },
+    "approver": {
+      "model": "approver",
+      "via": "eventcontracts"
+    },
+    "binary": {
+      "default": "",
+      "type": "text",
+      "required": true
+    },
+    "name": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "sources": {
+      "default": "",
+      "type": "text",
+      "required": true
+    },
+    "t721_version": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "solidity_version": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "abi": {
+      "default": "",
+      "type": "json",
+      "required": true
+    },
+    "events": {
+      "collection": "event",
+      "via": "eventcontract"
+    },
+    "runtime_binary": {
+      "default": "",
+      "type": "text",
+      "required": true
+    }
+  }
+}

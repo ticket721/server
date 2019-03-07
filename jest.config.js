@@ -16,5 +16,11 @@ module.exports = {
     ],
     "setupFilesAfterEnv": [
         "<rootDir>/jest_setup_files/testdouble.js"
+    ],
+    "collectCoverageFrom": [
+        "<rootDir>/hooks_sources/evm-events/EventBridge.ts",
+        "<rootDir>/hooks_sources/evm-events/EventFetcher.ts",
+        "!<rootDir>/hooks_sources/evm-events/events/*.ts",
+        "!<rootDir>/hooks_sources/ethereum_utils/**/*.ts",
     ]
 };

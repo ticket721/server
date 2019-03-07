@@ -1,13 +1,20 @@
 {
-    "timeout": 3000,
+    "timeout": 10000,
     "load": {
         "before": [],
         "order": [
-            "Define the hooks' load order by putting their names in this array in the right order"
         ],
-        "after": []
+        "after": [
+            "knex",
+            "bookshelf",
+            "ethereum_utils",
+            "evm-events"
+        ]
     },
-    "test": {
+    "ethereum_utils": {
+        "enabled": true
+    },
+    "evm-events": {
         "enabled": true
     }
 }

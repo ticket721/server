@@ -7,16 +7,19 @@
         "rootDir": "./hooks_sources",
         "types": [
             "jest",
-            "node"
+            "node",
+            "bookshelf"
         ],
         "lib": [
             "dom",
             "es2015"
-        ]
+        ],
+        "resolveJsonModule": true,
+        "downlevelIteration": true
     },
     "exclude": [
         "node_modules",
-        "./hooks_sources/test/test.test.ts"
+        "./hooks_sources/ethereum_utils/ethereum_utils.test.ts"
     ],
     "include": [
         "./hooks_sources/typings.d.ts",
