@@ -25,6 +25,21 @@
       "default": "",
       "type": "string",
       "required": true
+    },
+    "node_host": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "node_port": {
+      "default": "",
+      "type": "integer",
+      "required": true
+    },
+    "node_connection_protocol": {
+      "default": "",
+      "type": "string",
+      "required": true
     }
   }
 }

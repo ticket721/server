@@ -1185,9 +1185,6 @@
             "type": "string",
             "minLength": 6
           },
-          "private_key": {
-            "type": "string"
-          },
           "resetPasswordToken": {
             "type": "string"
           },

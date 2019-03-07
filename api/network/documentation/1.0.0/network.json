@@ -513,7 +513,10 @@
           "id",
           "net_id",
           "contracts",
-          "genesis_block_hash"
+          "genesis_block_hash",
+          "node_host",
+          "node_port",
+          "node_connection_protocol"
         ],
         "properties": {
           "id": {
@@ -530,6 +533,18 @@
           "genesis_block_hash": {
             "type": "string",
             "default": ""
+          },
+          "node_host": {
+            "type": "string",
+            "default": ""
+          },
+          "node_port": {
+            "type": "integer",
+            "default": ""
+          },
+          "node_connection_protocol": {
+            "type": "string",
+            "default": ""
           }
         }
       },
@@ -537,7 +552,10 @@
         "required": [
           "net_id",
           "contracts",
-          "genesis_block_hash"
+          "genesis_block_hash",
+          "node_host",
+          "node_port",
+          "node_connection_protocol"
         ],
         "properties": {
           "net_id": {
@@ -549,6 +567,18 @@
             "default": ""
           },
           "genesis_block_hash": {
+            "type": "string",
+            "default": ""
+          },
+          "node_host": {
+            "type": "string",
+            "default": ""
+          },
+          "node_port": {
+            "type": "integer",
+            "default": ""
+          },
+          "node_connection_protocol": {
             "type": "string",
             "default": ""
           }

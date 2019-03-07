@@ -169,7 +169,13 @@ export = (strapi: StrapiCtx): Hook => {
                         const artifact = require(from_current(path.join('./portal/contracts', file)));
 
                         if (artifact.networks[net_id]) {
-                            contracts[artifact.name] = artifact.networks[net_id].address;
+                            const code = (await web3.eth.getCode(artifact.networks[net_id].address)).toLowerCase();
+
+                            contracts[artifact.name] = {
+                                address: artifact.networks[net_id].address,
+                                runtime_binary: code,
+                                abi: JSON.stringify(artifact.abi)
+                            };
                         }
                     }
                 }
@@ -177,7 +183,10 @@ export = (strapi: StrapiCtx): Hook => {
                 const new_net_infos = new strapi.models.network({
                     net_id,
                     contracts: JSON.stringify(contracts),
-                    genesis_block_hash: genesis
+                    genesis_block_hash: genesis,
+                    node_host: network_config.host,
+                    node_port: network_config.port,
+                    node_connection_protocol: network_config.connection_protocol
                 });
 
                 await new_net_infos.save();
