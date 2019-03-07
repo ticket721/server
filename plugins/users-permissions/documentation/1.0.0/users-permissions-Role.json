@@ -591,9 +591,6 @@
                 "password": {
                   "type": "string"
                 },
-                "private_key": {
-                  "type": "string"
-                },
                 "resetPasswordToken": {
                   "type": "string"
                 },
