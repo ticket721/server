@@ -511,8 +511,6 @@
       "Action": {
         "required": [
           "id",
-          "by",
-          "to",
           "action_type",
           "infos",
           "block"
@@ -568,6 +566,12 @@
               },
               "event": {
                 "type": "boolean"
+              },
+              "issued": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -618,6 +622,12 @@
               },
               "event": {
                 "type": "boolean"
+              },
+              "issued": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -653,6 +663,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "issuer": {
+                "type": "string"
               }
             }
           },
@@ -683,8 +696,6 @@
       },
       "NewAction": {
         "required": [
-          "by",
-          "to",
           "action_type",
           "infos",
           "block"

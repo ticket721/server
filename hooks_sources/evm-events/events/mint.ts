@@ -32,11 +32,22 @@ export async function mint_bridge_action(db_by: any, db_to: any, id: number, blo
     await action.save();
 
     const event = await this.event.where({address: db_to.id}).fetch();
-    db_id.set({
-        mint_block: block,
-        owner: db_to.id,
-        event: event.id
-    });
+
+    if (event) {
+        db_id.set({
+            mint_block: block,
+            owner: db_to.id,
+            event: event.id,
+            issuer: db_to.id
+        });
+    } else {
+        db_id.set({
+            mint_block: block,
+            owner: db_to.id,
+            event: null,
+            issuer: db_to.id
+        });
+    }
     await db_id.save();
     return ;
 

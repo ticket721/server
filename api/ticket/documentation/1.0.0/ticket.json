@@ -568,6 +568,12 @@
               },
               "event": {
                 "type": "boolean"
+              },
+              "issued": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -575,8 +581,7 @@
             "required": [
               "id",
               "address",
-              "name",
-              "owner"
+              "name"
             ],
             "properties": {
               "id": {
@@ -607,8 +612,6 @@
             "items": {
               "required": [
                 "id",
-                "by",
-                "to",
                 "action_type",
                 "infos",
                 "block"
@@ -647,7 +650,6 @@
             "items": {
               "required": [
                 "id",
-                "ticket",
                 "end_block",
                 "begin_block",
                 "status"
@@ -666,6 +668,62 @@
                   "type": "integer"
                 },
                 "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "issuer": {
+            "required": [
+              "id",
+              "address",
+              "admin",
+              "event_manager",
+              "event"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "tickets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_by": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_to": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "admin": {
+                "type": "boolean"
+              },
+              "event_manager": {
+                "type": "boolean"
+              },
+              "event": {
+                "type": "boolean"
+              },
+              "issued": {
+                "type": "array",
+                "items": {
                   "type": "string"
                 }
               }
@@ -703,6 +761,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "issuer": {
+            "type": "string"
           }
         }
       }

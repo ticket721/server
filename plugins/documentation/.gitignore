@@ -4,6 +4,7 @@ node_modules
 stats.json
 package-lock.json
 /admin/build
+/documentation
 
 # Cruft
 .DS_Store

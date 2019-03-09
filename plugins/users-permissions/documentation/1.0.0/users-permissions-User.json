@@ -1097,6 +1097,77 @@
           }
         ]
       }
+    },
+    "/users/set-wallet": {
+      "post": {
+        "deprecated": false,
+        "description": "Set encrypted user wallet",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Users-Permissions - User"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1161,6 +1232,66 @@
                 }
               }
             }
+          },
+          "encrypted_wallet": {
+            "type": "json",
+            "default": ""
+          },
+          "user_address": {
+            "required": [
+              "id",
+              "address",
+              "admin",
+              "event_manager",
+              "event"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "tickets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_by": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_to": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "admin": {
+                "type": "boolean"
+              },
+              "event_manager": {
+                "type": "boolean"
+              },
+              "event": {
+                "type": "boolean"
+              },
+              "issued": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -1197,6 +1328,13 @@
             "default": false
           },
           "role": {
+            "type": "string"
+          },
+          "encrypted_wallet": {
+            "type": "json",
+            "default": ""
+          },
+          "user_address": {
             "type": "string"
           }
         }

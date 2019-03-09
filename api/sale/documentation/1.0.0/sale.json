@@ -511,7 +511,6 @@
       "Sale": {
         "required": [
           "id",
-          "ticket",
           "end_block",
           "begin_block",
           "status"
@@ -552,6 +551,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "issuer": {
+                "type": "string"
               }
             }
           },
@@ -576,7 +578,6 @@
       },
       "NewSale": {
         "required": [
-          "ticket",
           "end_block",
           "begin_block",
           "status"
