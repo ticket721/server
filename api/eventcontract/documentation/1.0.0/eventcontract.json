@@ -708,8 +708,7 @@
               "required": [
                 "id",
                 "address",
-                "name",
-                "owner"
+                "name"
               ],
               "properties": {
                 "id": {

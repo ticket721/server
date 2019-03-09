@@ -512,8 +512,7 @@
         "required": [
           "id",
           "address",
-          "name",
-          "owner"
+          "name"
         ],
         "properties": {
           "id": {
@@ -566,6 +565,12 @@
               },
               "event": {
                 "type": "boolean"
+              },
+              "issued": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -603,6 +608,9 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "issuer": {
+                  "type": "string"
                 }
               }
             }
@@ -658,6 +666,12 @@
               },
               "event": {
                 "type": "boolean"
+              },
+              "issued": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -719,8 +733,7 @@
       "NewEvent": {
         "required": [
           "address",
-          "name",
-          "owner"
+          "name"
         ],
         "properties": {
           "address": {

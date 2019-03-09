@@ -49,6 +49,10 @@
       "default": false,
       "type": "boolean",
       "required": true
+    },
+    "issued": {
+      "collection": "ticket",
+      "via": "issuer"
     }
   }
 }

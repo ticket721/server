@@ -560,6 +560,9 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "issuer": {
+                  "type": "string"
                 }
               }
             }
@@ -569,8 +572,6 @@
             "items": {
               "required": [
                 "id",
-                "by",
-                "to",
                 "action_type",
                 "infos",
                 "block"
@@ -605,8 +606,6 @@
             "items": {
               "required": [
                 "id",
-                "by",
-                "to",
                 "action_type",
                 "infos",
                 "block"
@@ -642,8 +641,7 @@
               "required": [
                 "id",
                 "address",
-                "name",
-                "owner"
+                "name"
               ],
               "properties": {
                 "id": {
@@ -681,6 +679,47 @@
           "event": {
             "type": "boolean",
             "default": false
+          },
+          "issued": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "ticket_id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "ticket_id": {
+                  "type": "integer"
+                },
+                "owner": {
+                  "type": "string"
+                },
+                "event": {
+                  "type": "string"
+                },
+                "actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "mint_block": {
+                  "type": "integer"
+                },
+                "sale": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "issuer": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -733,6 +772,12 @@
           "event": {
             "type": "boolean",
             "default": false
+          },
+          "issued": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

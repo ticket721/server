@@ -37,6 +37,10 @@
     "sale": {
       "collection": "sale",
       "via": "ticket"
+    },
+    "issuer": {
+      "model": "address",
+      "via": "issued"
     }
   }
 }
