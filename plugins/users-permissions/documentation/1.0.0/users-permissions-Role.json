@@ -602,6 +602,9 @@
                 },
                 "role": {
                   "type": "string"
+                },
+                "encrypted_wallet": {
+                  "type": "json"
                 }
               }
             }
