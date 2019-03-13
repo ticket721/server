@@ -1236,6 +1236,56 @@
           "encrypted_wallet": {
             "type": "json",
             "default": ""
+          },
+          "user_address": {
+            "required": [
+              "id",
+              "address",
+              "admin",
+              "event_manager",
+              "event"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "tickets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_by": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_to": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "admin": {
+                "type": "boolean"
+              },
+              "event_manager": {
+                "type": "boolean"
+              },
+              "event": {
+                "type": "boolean"
+              }
+            }
           }
         }
       },
@@ -1277,6 +1327,9 @@
           "encrypted_wallet": {
             "type": "json",
             "default": ""
+          },
+          "user_address": {
+            "type": "string"
           }
         }
       }

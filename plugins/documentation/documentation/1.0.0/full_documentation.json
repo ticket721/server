@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "03/08/2019 10:37:14 PM"
+    "x-generation-date": "03/13/2019 6:25:30 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -7224,8 +7224,6 @@
       "Action": {
         "required": [
           "id",
-          "by",
-          "to",
           "action_type",
           "infos",
           "block"
@@ -7396,8 +7394,6 @@
       },
       "NewAction": {
         "required": [
-          "by",
-          "to",
           "action_type",
           "infos",
           "block"
@@ -7498,8 +7494,6 @@
             "items": {
               "required": [
                 "id",
-                "by",
-                "to",
                 "action_type",
                 "infos",
                 "block"
@@ -7534,8 +7528,6 @@
             "items": {
               "required": [
                 "id",
-                "by",
-                "to",
                 "action_type",
                 "infos",
                 "block"
@@ -7571,8 +7563,7 @@
               "required": [
                 "id",
                 "address",
-                "name",
-                "owner"
+                "name"
               ],
               "properties": {
                 "id": {
@@ -7837,8 +7828,7 @@
         "required": [
           "id",
           "address",
-          "name",
-          "owner"
+          "name"
         ],
         "properties": {
           "id": {
@@ -8044,8 +8034,7 @@
       "NewEvent": {
         "required": [
           "address",
-          "name",
-          "owner"
+          "name"
         ],
         "properties": {
           "address": {
@@ -8269,8 +8258,7 @@
               "required": [
                 "id",
                 "address",
-                "name",
-                "owner"
+                "name"
               ],
               "properties": {
                 "id": {
@@ -8932,8 +8920,7 @@
             "required": [
               "id",
               "address",
-              "name",
-              "owner"
+              "name"
             ],
             "properties": {
               "id": {
@@ -8964,8 +8951,6 @@
             "items": {
               "required": [
                 "id",
-                "by",
-                "to",
                 "action_type",
                 "infos",
                 "block"
@@ -9195,6 +9180,9 @@
                 },
                 "encrypted_wallet": {
                   "type": "json"
+                },
+                "user_address": {
+                  "type": "string"
                 }
               }
             }
@@ -9294,6 +9282,56 @@
           "encrypted_wallet": {
             "type": "json",
             "default": ""
+          },
+          "user_address": {
+            "required": [
+              "id",
+              "address",
+              "admin",
+              "event_manager",
+              "event"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "tickets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_by": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions_to": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "admin": {
+                "type": "boolean"
+              },
+              "event_manager": {
+                "type": "boolean"
+              },
+              "event": {
+                "type": "boolean"
+              }
+            }
           }
         }
       },
@@ -9335,6 +9373,9 @@
           "encrypted_wallet": {
             "type": "json",
             "default": ""
+          },
+          "user_address": {
+            "type": "string"
           }
         }
       },

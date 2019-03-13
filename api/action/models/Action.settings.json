@@ -1,55 +1,53 @@
 {
-    "connection": "default",
-    "collectionName": "action",
-    "info": {
-        "name": "action",
-        "description": "An action is and EVM Event"
+  "connection": "default",
+  "collectionName": "action",
+  "info": {
+    "name": "action",
+    "description": "An action is and EVM Event"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "by": {
+      "model": "address",
+      "via": "actions_by"
     },
-    "options": {
-        "increments": true,
-        "timestamps": true,
-        "comment": ""
+    "to": {
+      "model": "address",
+      "via": "actions_to"
     },
-    "attributes": {
-        "by": {
-            "model": "address",
-            "via": "actions_by",
-            "required": true
-        },
-        "to": {
-            "model": "address",
-            "via": "actions_to",
-            "required": true
-        },
-        "on_ticket": {
-            "model": "ticket",
-            "via": "actions"
-        },
-        "action_type": {
-            "default": "",
-            "type": "enumeration",
-            "required": true,
-            "enum": [
-                "mint",
-                "sale",
-                "sale_close",
-                "buy",
-                "transfer",
-                "approval",
-                "approval_for_all",
-                "event",
-                "new_admin"
-            ]
-        },
-        "infos": {
-            "default": "",
-            "type": "json",
-            "required": true
-        },
-        "block": {
-            "default": "",
-            "type": "integer",
-            "required": true
-        }
+    "on_ticket": {
+      "model": "ticket",
+      "via": "actions"
+    },
+    "action_type": {
+      "default": "",
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "mint",
+        "sale",
+        "sale_close",
+        "buy",
+        "transfer",
+        "approval",
+        "approval_for_all",
+        "event",
+        "new_admin"
+      ]
+    },
+    "infos": {
+      "default": "",
+      "type": "json",
+      "required": true
+    },
+    "block": {
+      "default": "",
+      "type": "integer",
+      "required": true
     }
+  }
 }

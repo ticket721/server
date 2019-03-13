@@ -67,8 +67,8 @@ module.exports = {
         return strapi.query('user', 'users-permissions').findOne(_.pick(params, ['_id', 'id']));
     },
 
-    setWallet: (id, encrypted_wallet) => {
-        return strapi.query('user', 'users-permissions').update(_.assign({id}, {encrypted_wallet}));
+    setWallet: (id, encrypted_wallet, address_id) => {
+        return strapi.query('user', 'users-permissions').update(_.assign({id}, {encrypted_wallet, user_address: address_id}));
     },
 
     /**

@@ -605,6 +605,9 @@
                 },
                 "encrypted_wallet": {
                   "type": "json"
+                },
+                "user_address": {
+                  "type": "string"
                 }
               }
             }

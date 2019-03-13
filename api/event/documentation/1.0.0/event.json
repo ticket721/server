@@ -512,8 +512,7 @@
         "required": [
           "id",
           "address",
-          "name",
-          "owner"
+          "name"
         ],
         "properties": {
           "id": {
@@ -719,8 +718,7 @@
       "NewEvent": {
         "required": [
           "address",
-          "name",
-          "owner"
+          "name"
         ],
         "properties": {
           "address": {

@@ -52,6 +52,9 @@
     "encrypted_wallet": {
       "default": "",
       "type": "json"
+    },
+    "user_address": {
+      "model": "address"
     }
   },
   "collectionName": "users-permissions_user"

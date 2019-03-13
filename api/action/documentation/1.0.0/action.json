@@ -511,8 +511,6 @@
       "Action": {
         "required": [
           "id",
-          "by",
-          "to",
           "action_type",
           "infos",
           "block"
@@ -683,8 +681,6 @@
       },
       "NewAction": {
         "required": [
-          "by",
-          "to",
           "action_type",
           "infos",
           "block"
