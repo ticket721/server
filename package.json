@@ -14,7 +14,8 @@
         "start": "node server.js",
         "strapi": "node_modules/strapi/bin/strapi.js",
         "lint": "node_modules/.bin/eslint api/**/*.js config/**/*.js plugins/**/*.js",
-        "postinstall": "node node_modules/strapi/lib/utils/post-install.js && link-module-alias"
+        "postinstall": "node node_modules/strapi/lib/utils/post-install.js && link-module-alias",
+        "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
     },
     "repository": {
         "type": "git",
@@ -69,7 +70,10 @@
         "@portal": "./portal"
     },
     "devDependencies": {
+        "@commitlint/cli": "^7.5.2",
+        "@commitlint/config-conventional": "^7.5.0",
         "babel-eslint": "^7.1.1",
+        "conventional-changelog-cli": "^2.0.12",
         "deep-extend": ">=0.5.1",
         "eslint": "^4.19.1",
         "eslint-config-airbnb": "^13.0.0",
@@ -86,7 +90,8 @@
     ],
     "husky": {
         "hooks": {
-            "pre-commit": "editorconfig-cli -x node_modules && tslint --project ."
+            "pre-commit": "editorconfig-cli -x node_modules && tslint --project .",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     }
 }
