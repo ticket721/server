@@ -5,7 +5,7 @@ const {from_current} = require('../misc');
 
 const Docker = new dockerode();
 
-const DOCKER_IMAGE_NAME = 'postgres';
+const DOCKER_IMAGE_NAME = 'postgres:9.4';
 const PORT = '5432';
 const HOST_PORT = '5432';
 const DB_NAME = 't721';
@@ -15,8 +15,15 @@ const CONTAINER_NAME = 't721-postgres';
 
 async function pull_postgres() {
     signale.info(`Pulling ${DOCKER_IMAGE_NAME}`);
-    await Docker.pull(DOCKER_IMAGE_NAME);
-    signale.success(`Pulled ${DOCKER_IMAGE_NAME}`);
+    return new Promise(async (ok, ko) => {
+        await Docker.pull(DOCKER_IMAGE_NAME, (err, res) => {
+            if (err) ko(err);
+            Docker.modem.followProgress(res, () => {
+                signale.success(`docker: Pulled ${DOCKER_IMAGE_NAME}`);
+                ok();
+            });
+        });
+    })
 }
 
 async function run_postgres() {
