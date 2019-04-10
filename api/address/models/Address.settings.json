@@ -40,11 +40,6 @@
       "type": "boolean",
       "required": true
     },
-    "event_manager": {
-      "default": false,
-      "type": "boolean",
-      "required": true
-    },
     "event": {
       "default": false,
       "type": "boolean",

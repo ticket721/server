@@ -524,7 +524,6 @@
               "id",
               "address",
               "admin",
-              "event_manager",
               "event"
             ],
             "properties": {
@@ -559,9 +558,6 @@
                 }
               },
               "admin": {
-                "type": "boolean"
-              },
-              "event_manager": {
                 "type": "boolean"
               },
               "event": {
@@ -580,7 +576,6 @@
               "id",
               "address",
               "admin",
-              "event_manager",
               "event"
             ],
             "properties": {
@@ -615,9 +610,6 @@
                 }
               },
               "admin": {
-                "type": "boolean"
-              },
-              "event_manager": {
                 "type": "boolean"
               },
               "event": {

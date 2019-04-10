@@ -1,7 +1,7 @@
 import * as Signale from 'signale';
 
-export const event_fetch_call = async (EventRegistry: any, begin: number, end: number): Promise<any> =>
-    (await EventRegistry.getPastEvents('Event', {fromBlock: begin, toBlock: end} as any))
+export const event_fetch_call = async (T721: any, begin: number, end: number): Promise<any> =>
+    (await T721.getPastEvents('Event', {fromBlock: begin, toBlock: end} as any))
         .map((event: any) =>
             ({
                 block: event.blockNumber,
@@ -19,7 +19,6 @@ export const event_view_call = (raw: string[]): {by: string; to: string; id: num
 
 export async function event_bridge_action(db_by: any, db_to: any, id: number, block: number, infos: any): Promise<void> {
     Signale.info(`[evm-events][event] created by: ${db_by.attributes.address} at address: ${db_to.attributes.address} block: ${block}`);
-    // TODO check if corresponds to known contract type and set in event
     const action = new this.action({
         by: db_by.id,
         to: db_to.id,

@@ -17,7 +17,7 @@ module.exports.portalize_requirements = async function portalize_requirements() 
         }
     }
 
-    const contracts = ['AdministrationBoardV0', 'EventManagersRegistryV0', 'EventRegistryV0', 'T721V0'];
+    const contracts = ['AdministrationBoardV0', 'T721V0'];
 
     for (const contract of contracts) {
         if (!Portalize.get.requires({
