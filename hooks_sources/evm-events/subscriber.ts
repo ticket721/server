@@ -10,8 +10,6 @@ import { buy_fetch_call, buy_view_call }                       from './events/bu
 import { sale_close_fetch_call, sale_close_view_call }         from './events/sale_close';
 import { new_admin_fetch_call, new_admin_view_call }           from './events/new_admin';
 import { delete_admin_fetch_call, delete_admin_view_call }     from './events/delete_admin';
-import { new_manager_fetch_call, new_manager_view_call }       from './events/new_manager';
-import { delete_manager_fetch_call, delete_manager_view_call } from './events/delete_manager';
 
 interface Heights {
     mint: any;
@@ -57,13 +55,9 @@ const close_outdated_sales = async (sale: any, block: number): Promise<void> => 
 export async function subscriber(network_infos: any, web3: Web3, eb: EventBridge, height: any, sale: any): Promise<void> {
 
     const AdministrationBoardArtifact = Portalize.get.get('AdministrationBoardV0.artifact.json', {module: 'contracts'});
-    const EventManagersRegistryArtifact = Portalize.get.get('EventManagersRegistryV0.artifact.json', {module: 'contracts'});
-    const EventRegistryArtifact = Portalize.get.get('EventRegistryV0.artifact.json', {module: 'contracts'});
     const T721Artifact = Portalize.get.get('T721V0.artifact.json', {module: 'contracts'});
 
     const AdministrationBoard = new web3.eth.Contract(AdministrationBoardArtifact.abi, AdministrationBoardArtifact.networks[network_infos.network_id].address);
-    const EventManagersRegistry = new web3.eth.Contract(EventManagersRegistryArtifact.abi, EventManagersRegistryArtifact.networks[network_infos.network_id].address);
-    const EventRegistry = new web3.eth.Contract(EventRegistryArtifact.abi, EventRegistryArtifact.networks[network_infos.network_id].address);
     const T721 = new web3.eth.Contract(T721Artifact.abi, T721Artifact.networks[network_infos.network_id].address);
 
     const heights = await get_height(height);
@@ -74,11 +68,9 @@ export async function subscriber(network_infos: any, web3: Web3, eb: EventBridge
     fetchers.push(new EventFetcher('sale', sale_fetch_call.bind(null, T721), sale_view_call, eb.feed.bind(eb, 'sale')));
     fetchers.push(new EventFetcher('sale_close', sale_close_fetch_call.bind(null, T721), sale_close_view_call, eb.feed.bind(eb, 'sale_close')));
     fetchers.push(new EventFetcher('buy', buy_fetch_call.bind(null, T721), buy_view_call, eb.feed.bind(eb, 'buy')));
-    fetchers.push(new EventFetcher('event', event_fetch_call.bind(null, EventRegistry), event_view_call, eb.feed.bind(eb, 'event')));
+    fetchers.push(new EventFetcher('event', event_fetch_call.bind(null, T721), event_view_call, eb.feed.bind(eb, 'event')));
     fetchers.push(new EventFetcher('new_admin', new_admin_fetch_call.bind(null, AdministrationBoard), new_admin_view_call, eb.feed.bind(eb, 'new_admin')));
     fetchers.push(new EventFetcher('delete_admin', delete_admin_fetch_call.bind(null, AdministrationBoard), delete_admin_view_call, eb.feed.bind(eb, 'delete_admin')));
-    fetchers.push(new EventFetcher('new_manager', new_manager_fetch_call.bind(null, EventManagersRegistry), new_manager_view_call, eb.feed.bind(eb, 'new_manager')));
-    fetchers.push(new EventFetcher('delete_manager', delete_manager_fetch_call.bind(null, EventManagersRegistry), delete_manager_view_call, eb.feed.bind(eb, 'delete_manager')));
 
     eb.setHeight(heights);
 
