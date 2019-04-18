@@ -26,7 +26,7 @@ module.exports = {
     // Before creating a value.
     // Fired before an `insert` query.
     beforeCreate: async (model, attrs, options) => {
-        model.attributes.address = utils.getAddress(model.attributes.address);
+        model.attributes.address = utils.getAddress(model.attributes.address.toLowerCase());
     },
 
     // After creating a value.

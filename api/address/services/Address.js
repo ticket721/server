@@ -12,6 +12,7 @@ const _ = require('lodash');
 
 // Strapi utilities.
 const utils = require('strapi-hook-bookshelf/lib/utils/');
+const ethers = require('ethers');
 
 module.exports = {
 
@@ -23,6 +24,10 @@ module.exports = {
 
     fetchAll: (params) => {
         // Convert `params` object to filters compatible with Bookshelf.
+
+        if (params.address)
+            params.address = ethers.utils.getAddress(params.address.toLowerCase());
+
         const filters = strapi.utils.models.convertParams('address', params);
         // Select field to populate.
         const populate = Address.associations

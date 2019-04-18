@@ -1,52 +1,52 @@
 {
-    "routes": [
-        {
-            "method": "GET",
-            "path": "/actions",
-            "handler": "Action.find",
-            "config": {
-                "policies": []
-            }
-        },
-        {
-            "method": "GET",
-            "path": "/actions/count",
-            "handler": "Action.count",
-            "config": {
-                "policies": []
-            }
-        },
-        {
-            "method": "GET",
-            "path": "/actions/:id",
-            "handler": "Action.findOne",
-            "config": {
-                "policies": []
-            }
-        },
-        {
-            "method": "POST",
-            "path": "/actions",
-            "handler": "Action.create",
-            "config": {
-                "policies": []
-            }
-        },
-        {
-            "method": "PUT",
-            "path": "/actions/:id",
-            "handler": "Action.update",
-            "config": {
-                "policies": []
-            }
-        },
-        {
-            "method": "DELETE",
-            "path": "/actions/:id",
-            "handler": "Action.destroy",
-            "config": {
-                "policies": []
-            }
-        }
-    ]
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/actions",
+      "handler": "Action.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/actions/count",
+      "handler": "Action.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/actions/:id",
+      "handler": "Action.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/actions",
+      "handler": "Action.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/actions/:id",
+      "handler": "Action.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/actions/:id",
+      "handler": "Action.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
 }
