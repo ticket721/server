@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/networks",
-      "handler": "Network.find",
+      "path": "/heights",
+      "handler": "Height.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/networks/count",
-      "handler": "Network.count",
+      "path": "/heights/count",
+      "handler": "Height.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/networks/:id",
-      "handler": "Network.findOne",
+      "path": "/heights/:id",
+      "handler": "Height.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/networks",
-      "handler": "Network.create",
+      "path": "/heights",
+      "handler": "Height.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/networks/:id",
-      "handler": "Network.update",
+      "path": "/heights/:id",
+      "handler": "Height.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/networks/:id",
-      "handler": "Network.destroy",
+      "path": "/heights/:id",
+      "handler": "Height.destroy",
       "config": {
         "policies": []
       }
