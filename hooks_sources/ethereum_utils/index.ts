@@ -197,6 +197,10 @@ export = (strapi: StrapiCtx): Hook => {
                 }
             }
 
+            strapi.ethereum = {
+                web3
+            };
+
             cb();
         }
     };

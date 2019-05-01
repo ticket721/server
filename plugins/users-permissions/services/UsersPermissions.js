@@ -167,8 +167,9 @@ module.exports = {
         policy: permission.policy
       });
 
+      // TODO fix this when https://github.com/strapi/strapi/issues/1609 is resolved
       if (permission.type !== 'application' && !acc[permission.type].information) {
-        acc[permission.type].information = plugins.find(plugin => plugin.id === permission.type) || {};
+        acc[permission.type].information = {}; // plugins.find(plugin => plugin.id === permission.type) || {};
       }
 
       return acc;

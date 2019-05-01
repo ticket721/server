@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/queuedevents",
+      "handler": "Queuedevent.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/queuedevents/count",
+      "handler": "Queuedevent.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/queuedevents/:id",
+      "handler": "Queuedevent.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/queuedevents",
+      "handler": "Queuedevent.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/queuedevents/:id",
+      "handler": "Queuedevent.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/queuedevents/:id",
+      "handler": "Queuedevent.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
