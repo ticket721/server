@@ -18,4 +18,5 @@ declare type StrapiCtx = {
     utils: any;
     api: any;
     hook: any;
+    ethereum: any;
 };

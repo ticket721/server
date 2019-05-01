@@ -31,6 +31,34 @@
     "eventcontract": {
       "model": "eventcontract",
       "via": "events"
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    },
+    "icons": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "banners": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "start": {
+      "default": "",
+      "type": "date"
+    },
+    "end": {
+      "default": "",
+      "type": "date"
+    },
+    "location": {
+      "default": "",
+      "type": "json"
     }
   }
 }

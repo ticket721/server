@@ -48,6 +48,10 @@
     "issued": {
       "collection": "ticket",
       "via": "issuer"
+    },
+    "queuedevents": {
+      "collection": "queuedevent",
+      "via": "owner"
     }
   }
 }
