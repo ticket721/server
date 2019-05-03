@@ -101,6 +101,7 @@ module.exports = {
         // Extract values related to relational data.
         const relations = _.pick(values, Event.associations.map(ast => ast.alias));
         const data = _.omit(values, Event.associations.map(ast => ast.alias));
+        data.address = relations.address;
 
         // Create entry with no-relational data.
         const entry = await Event.forge(data).save();

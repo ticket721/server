@@ -32,20 +32,24 @@ export class EventBridge {
     private readonly action: any;
     private readonly ticket: any;
     private readonly event: any;
+    private readonly queuedevents: any;
     private readonly sale: any;
     private readonly eventcontracts: any;
     private readonly web3: any;
+    private readonly strapi: any;
     private payloads: Payloads;
     private end: number = 0;
     private height: any;
 
-    constructor(address: any, action: any, ticket: any, event: any, sale: any, eventcontracts: any, web3: any) {
-        this.address = address;
-        this.action = action;
-        this.ticket = ticket;
-        this.event = event;
-        this.sale = sale;
-        this.eventcontracts = eventcontracts;
+    constructor(strapi: any, web3: any) {
+        this.address = strapi.models.address;
+        this.action = strapi.models.action;
+        this.ticket = strapi.models.ticket;
+        this.event = strapi.models.event;
+        this.sale = strapi.models.sale;
+        this.eventcontracts = strapi.models.eventcontract;
+        this.queuedevents = strapi.models.queuedevent;
+        this.strapi = strapi;
         this.web3 = web3;
         this.reset_payloads();
     }

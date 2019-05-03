@@ -34,6 +34,41 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "banners": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "type": {
+      "model": "eventcontract",
+      "via": "queuedevents"
+    },
+    "location": {
+      "default": "",
+      "type": "json",
+      "required": true
+    },
+    "start": {
+      "default": "",
+      "type": "date",
+      "required": true
+    },
+    "end": {
+      "default": "",
+      "type": "date",
+      "required": true
+    },
+    "creation": {
+      "default": "",
+      "type": "date"
     }
   }
 }

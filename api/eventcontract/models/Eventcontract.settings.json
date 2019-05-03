@@ -61,6 +61,10 @@
       "default": "",
       "type": "text",
       "required": true
+    },
+    "queuedevents": {
+      "collection": "queuedevent",
+      "via": "type"
     }
   }
 }

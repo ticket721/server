@@ -22,12 +22,12 @@ export = (strapi: StrapiCtx): Hook => {
                 return cb(new Error('Services are not loaded in the strapi models'));
             }
 
-            if (!strapi.models.address || !strapi.models.action || !strapi.models.ticket || !strapi.models.height || !strapi.models.event || !strapi.models.sale || !strapi.models.eventcontract) {
+            if (!strapi.models.address || !strapi.models.action || !strapi.models.ticket || !strapi.models.height || !strapi.models.event || !strapi.models.sale || !strapi.models.eventcontract || !strapi.models.queuedevent) {
                 return cb(new Error('Missing models'));
             }
 
             strapi.log.info('[evm-events] Loaded models');
-            const eb = new EventBridge(strapi.models.address, strapi.models.action, strapi.models.ticket, strapi.models.event, strapi.models.sale, strapi.models.eventcontract, web3);
+            const eb = new EventBridge(strapi, web3);
 
             subscriber(network_config, web3, eb, strapi.models.height, strapi.models.sale)
                 .then((): void => {
