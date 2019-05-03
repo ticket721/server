@@ -69,6 +69,121 @@ module.exports = {
     },
 
     /**
+     * Promise to count a/an ticket, search style.
+     *
+     * @return {Promise}
+     */
+
+    filterableCountSearch: (params) => {
+        // Convert `params` object to filters compatible with Bookshelf.
+        const filters = strapi.utils.models.convertParams('ticket', params);
+        // Select field to populate.
+        const populate = Ticket.associations
+            .filter(ast => ast.autoPopulate !== false)
+            .map(ast => ast.alias);
+
+        const associations = Ticket.associations.map(x => x.alias);
+        const searchText = Object.keys(Ticket._attributes)
+            .filter(attribute => attribute !== Ticket.primaryKey && !associations.includes(attribute))
+            .filter(attribute => ['string', 'text'].includes(Ticket._attributes[attribute].type));
+
+        const searchNoText = Object.keys(Ticket._attributes)
+            .filter(attribute => attribute !== Ticket.primaryKey && !associations.includes(attribute))
+            .filter(attribute => !['string', 'text', 'boolean', 'integer', 'decimal', 'float'].includes(Ticket._attributes[attribute].type));
+
+        const searchInt = Object.keys(Ticket._attributes)
+            .filter(attribute => attribute !== Ticket.primaryKey && !associations.includes(attribute))
+            .filter(attribute => ['integer', 'decimal', 'float'].includes(Ticket._attributes[attribute].type));
+
+        const searchBool = Object.keys(Ticket._attributes)
+            .filter(attribute => attribute !== Ticket.primaryKey && !associations.includes(attribute))
+            .filter(attribute => ['boolean'].includes(Ticket._attributes[attribute].type));
+
+        const query = (params._q || '').replace(/[^a-zA-Z0-9.-\s]+/g, '');
+
+        return Ticket.query(qb => {
+            // Search in columns which are not text value.
+            searchNoText.forEach(attribute => {
+                qb.orWhereRaw(`LOWER(${attribute}) LIKE '%${_.toLower(query)}%'`);
+            });
+
+            if (!_.isNaN(_.toNumber(query))) {
+                searchInt.forEach(attribute => {
+                    qb.orWhereRaw(`${attribute} = ${_.toNumber(query)}`);
+                });
+            }
+
+            if (query === 'true' || query === 'false') {
+                searchBool.forEach(attribute => {
+                    qb.orWhereRaw(`${attribute} = ${_.toNumber(query === 'true')}`);
+                });
+            }
+
+            // Search in columns with text using index.
+            switch (Ticket.client) {
+                case 'mysql':
+                    qb.orWhereRaw(`MATCH(${searchText.join(',')}) AGAINST(? IN BOOLEAN MODE)`, `*${query}*`);
+                    break;
+                case 'pg': {
+                    const searchQuery = searchText.map(attribute =>
+                        _.toLower(attribute) === attribute
+                            ? `to_tsvector(${attribute})`
+                            : `to_tsvector('${attribute}')`
+                    );
+
+                    qb.orWhereRaw(`${searchQuery.join(' || ')} @@ to_tsquery(?)`, query);
+                    break;
+                }
+            }
+
+            if (filters.sort) {
+                qb.orderBy(filters.sort.key, filters.sort.order);
+            }
+
+            if (filters.skip) {
+                qb.offset(_.toNumber(filters.skip));
+            }
+
+            if (filters.limit) {
+                qb.limit(_.toNumber(filters.limit));
+            }
+        }).count();
+    },
+
+    /**
+     * Promise to count a/an ticket, fetchAll style.
+     *
+     * @return {Promise}
+     */
+
+    filterableCountFetchAll: (params) => {
+        // Convert `params` object to filters compatible with Bookshelf.
+        const filters = strapi.utils.models.convertParams('ticket', params);
+        // Select field to populate.
+        const populate = Ticket.associations
+            .filter(ast => ast.autoPopulate !== false)
+            .map(ast => ast.alias);
+
+        return Ticket.query(function(qb) {
+            _.forEach(filters.where, (where, key) => {
+                if (_.isArray(where.value) && where.symbol !== 'IN' && where.symbol !== 'NOT IN') {
+                    for (const value in where.value) {
+                        qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value])
+                    }
+                } else {
+                    qb.where(key, where.symbol, where.value);
+                }
+            });
+
+            if (filters.sort) {
+                qb.orderBy(filters.sort.key, filters.sort.order);
+            }
+
+            qb.offset(filters.start);
+            qb.limit(filters.limit);
+        }).count();
+    },
+    /**
      * Promise to count a/an ticket.
      *
      * @return {Promise}

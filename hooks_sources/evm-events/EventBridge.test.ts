@@ -45,6 +45,18 @@ describe('Testing EventBridge', (): void => {
         this.Event = this.bookshelf.Model;
         this.Sale = this.bookshelf.Model;
         this.EventContract = this.bookshelf.Model;
+        this.QueuedEvent = this.bookshelf.model;
+        this.strapi = {
+            models: {
+                address: this.Address,
+                action: this.Action,
+                ticket: this.Ticket,
+                event: this.Event,
+                sale: this.Sale,
+                eventcontract: this.EventContract,
+                queuedevent: this.queuedevent
+            }
+        };
         this.Height = {
             set: (): void => {},
             save: (): void => {}
@@ -57,7 +69,7 @@ describe('Testing EventBridge', (): void => {
     });
 
     test('testing db fail case: creating by', async (done: jest.DoneCallback): Promise<void> => {
-        const eb = new EventBridge(this.Address, this.Action, this.Ticket, this.Event, this.Sale, this.EventContract, {});
+        const eb = new EventBridge(this.strapi, {});
         eb.setHeight(this.Height);
 
         const tracker = this.mock_knex.getTracker();
@@ -90,7 +102,7 @@ describe('Testing EventBridge', (): void => {
     });
 
     test('testing db fail case: creating to', async (done: jest.DoneCallback): Promise<void> => {
-        const eb = new EventBridge(this.Address, this.Action, this.Ticket, this.Event, this.Sale, this.EventContract, {});
+        const eb = new EventBridge(this.strapi, {});
         eb.setHeight(this.Height);
 
         const tracker = this.mock_knex.getTracker();
@@ -131,7 +143,7 @@ describe('Testing EventBridge', (): void => {
     });
 
     test('adding mint event, by, to and id are known', async (done: jest.DoneCallback): Promise<void> => {
-        const eb = new EventBridge(this.Address, this.Action, this.Ticket, this.Event, this.Sale, this.EventContract, {});
+        const eb = new EventBridge(this.strapi, {});
         eb.setHeight(this.Height);
 
         const tracker = this.mock_knex.getTracker();
@@ -164,7 +176,7 @@ describe('Testing EventBridge', (): void => {
     });
 
     test('adding mint event on empty db', async (done: jest.DoneCallback): Promise<void> => {
-        const eb = new EventBridge(this.Address, this.Action, this.Ticket, this.Event, this.Sale, this.EventContract, {});
+        const eb = new EventBridge(this.strapi, {});
         eb.setHeight(this.Height);
 
         const tracker = this.mock_knex.getTracker();

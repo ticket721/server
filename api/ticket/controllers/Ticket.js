@@ -39,7 +39,11 @@ module.exports = {
      */
 
     count: async (ctx) => {
-        return strapi.services.ticket.count(ctx.query);
+        if (ctx.query._q) {
+            return strapi.services.ticket.filterableCountSearch(ctx.query);
+        } else {
+            return strapi.services.ticket.filterableCountFetchAll(ctx.query);
+        }
     },
 
     /**

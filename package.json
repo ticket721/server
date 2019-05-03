@@ -43,6 +43,7 @@
         "bookshelf": "^0.14.2",
         "coveralls": "^3.0.3",
         "dockerode": "^2.5.8",
+        "eth-sig-util": "1.4.2",
         "ethers": "^4.0.26",
         "gulp": "^4.0.0",
         "gulp-typescript": "^5.0.0",

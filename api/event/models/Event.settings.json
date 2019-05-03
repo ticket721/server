@@ -12,8 +12,8 @@
   },
   "attributes": {
     "address": {
-      "required": true,
-      "model": "address"
+      "model": "address",
+      "via": "linked_event"
     },
     "tickets": {
       "collection": "ticket",
@@ -36,12 +36,6 @@
       "default": "",
       "type": "text"
     },
-    "icons": {
-      "collection": "file",
-      "via": "related",
-      "plugin": "upload",
-      "required": false
-    },
     "banners": {
       "collection": "file",
       "via": "related",
@@ -59,6 +53,16 @@
     "location": {
       "default": "",
       "type": "json"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "creation": {
+      "default": "",
+      "type": "date"
     }
   }
 }

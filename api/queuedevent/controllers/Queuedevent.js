@@ -82,6 +82,8 @@ module.exports = {
                 throw new Error('Invalid contract. On Chain code does not match known reference contracts');
             }
 
+            ctx.request.body.type = event_contracts.models[event_type].id;
+
             const queued_event = await strapi.services.queuedevent.fetchAll({
                 address: tx_receipt.contractAddress
             });
@@ -108,14 +110,13 @@ module.exports = {
 
             const contract_address = await strapi.services.address.fetchAll({address: tx_receipt.contractAddress});
 
-            console.log(contract_address);
-
             if (contract_address.models.length !== 0) {
                 throw new Error('Contract already live and present on the server');
             }
 
             ctx.request.body.owner = owner.models[0].attributes.id;
             ctx.request.body.address = tx_receipt.contractAddress;
+            ctx.request.body.creation = new Date(Date.now());
 
         } catch (e) {
             return ctx.response.badRequest(e);

@@ -52,6 +52,14 @@
     "queuedevents": {
       "collection": "queuedevent",
       "via": "owner"
+    },
+    "linked_event": {
+      "model": "event",
+      "via": "address"
+    },
+    "username": {
+      "default": "",
+      "type": "string"
     }
   }
 }

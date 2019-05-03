@@ -89,7 +89,8 @@ module.exports = {
                 address = await strapi.services.address.add({
                     address: formatted_address,
                     admin: false,
-                    event: false
+                    event: false,
+                    username: user.username
                 });
             } else {
                 address = address.models[0];
