@@ -106,6 +106,23 @@ coverage
 
 .idea
 node_modules
+package-lock.json
 portal
 .DS_Store
 hooks
+
+###########################
+# Strapi
+###########################
+
+api/action/documentation/1.0.0/action.json
+api/address/documentation/1.0.0/address.json
+api/approver/documentation/1.0.0/approver.json
+api/event/documentation/1.0.0/event.json
+api/eventcontract/documentation/1.0.0/eventcontract.json
+api/marketer/documentation/1.0.0/marketer.json
+api/minter/documentation/1.0.0/minter.json
+api/queuedevent/documentation/1.0.0/queuedevent.json
+api/ticket/documentation/1.0.0/ticket.json
+plugins/documentation/public/index.html
+plugins/users-permissions/documentation/1.0.0/users-permissions-User.json
