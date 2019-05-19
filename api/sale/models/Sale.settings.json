@@ -31,9 +31,26 @@
       "enum": [
         "open",
         "closed",
-        "ended"
+        "ended",
+        "bought"
       ],
       "required": true
+    },
+    "event": {
+      "model": "event",
+      "via": "sales"
+    },
+    "marketer": {
+      "model": "marketer",
+      "via": "sales"
+    },
+    "price": {
+      "default": "",
+      "type": "json"
+    },
+    "update_height": {
+      "default": "",
+      "type": "integer"
     }
   }
 }

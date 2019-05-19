@@ -124,5 +124,4 @@ api/marketer/documentation/1.0.0/marketer.json
 api/minter/documentation/1.0.0/minter.json
 api/queuedevent/documentation/1.0.0/queuedevent.json
 api/ticket/documentation/1.0.0/ticket.json
-plugins/documentation/public/index.html
 plugins/users-permissions/documentation/1.0.0/users-permissions-User.json

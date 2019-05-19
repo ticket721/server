@@ -14,7 +14,7 @@ module.exports = {
      *
      * @return {Object|Array}
      */
-    eventsOfTickets: async (ctx) => {
+    eventsOfTickets: async (ctx, next, {populate} = {}) => {
         if (ctx.query._q) {
             const addresses = await strapi.services.address.search(ctx.query);
 
@@ -38,10 +38,10 @@ module.exports = {
 
             return ret;
         } else {
-            const addresses = await strapi.services.address.fetchAll(ctx.query);
+            const addresses = await strapi.services.address.fetchAll(ctx.query, populate);
 
             const ret = [];
-            for (const address of addresses.models) {
+            for (const address of addresses) {
                 const tickets = await strapi.services.ticket.fetchAll({
                     owner: address.id
                 });
@@ -49,7 +49,7 @@ module.exports = {
                 const add = {
                     id: address.id,
                     address: address.address,
-                    events: tickets.models.map(ticket => ticket.relations.event)
+                    events: tickets.map(ticket => ticket.event)
                 };
 
                 add.events = add.events.filter((event, idx) => add.events.findIndex((sub_event) => sub_event.id === event.id) === idx);
@@ -67,11 +67,11 @@ module.exports = {
      * @return {Object|Array}
      */
 
-    find: async (ctx) => {
+    find: async (ctx, next, {populate} = {}) => {
         if (ctx.query._q) {
             return strapi.services.address.search(ctx.query);
         } else {
-            return strapi.services.address.fetchAll(ctx.query);
+            return strapi.services.address.fetchAll(ctx.query, populate);
         }
     },
 
@@ -91,8 +91,8 @@ module.exports = {
      * @return {Number}
      */
 
-    count: async (ctx) => {
-        return strapi.services.address.count(ctx.query);
+    count: async (ctx, next, {populate} = {}) => {
+        return strapi.services.address.count(ctx.query, populate);
     },
 
     /**

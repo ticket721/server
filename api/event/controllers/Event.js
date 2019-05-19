@@ -14,11 +14,11 @@ module.exports = {
      * @return {Object|Array}
      */
 
-    find: async (ctx) => {
+    find: async (ctx, next, {populate} = {}) => {
         if (ctx.query._q) {
             return strapi.services.event.search(ctx.query);
         } else {
-            return strapi.services.event.fetchAll(ctx.query);
+            return strapi.services.event.fetchAll(ctx.query, populate);
         }
     },
 
@@ -28,8 +28,8 @@ module.exports = {
      * @return {Object}
      */
 
-    findOne: async (ctx) => {
-        return strapi.services.event.fetch(ctx.params);
+    findOne: async (ctx, next, {populate} = {}) => {
+        return strapi.services.event.fetch(ctx.params, populate);
     },
 
     /**
