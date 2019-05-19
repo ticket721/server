@@ -1,5 +1,6 @@
 /* global Event */
 'use strict';
+const { convertRestQueryParams, buildQuery } = require('strapi-utils');
 
 /**
  * Event.js service
@@ -21,34 +22,16 @@ module.exports = {
      * @return {Promise}
      */
 
-    fetchAll: (params) => {
-        // Convert `params` object to filters compatible with Bookshelf.
-        const filters = strapi.utils.models.convertParams('event', params);
-        // Select field to populate.
-        const populate = Event.associations
+    fetchAll: (params, populate) => {
+        const withRelated = populate || Event.associations
             .filter(ast => ast.autoPopulate !== false)
             .map(ast => ast.alias);
 
-        return Event.query(function(qb) {
-            _.forEach(filters.where, (where, key) => {
-                if (_.isArray(where.value) && where.symbol !== 'IN' && where.symbol !== 'NOT IN') {
-                    for (const value in where.value) {
-                        qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value])
-                    }
-                } else {
-                    qb.where(key, where.symbol, where.value);
-                }
-            });
+        const filters = convertRestQueryParams(params);
 
-            if (filters.sort) {
-                qb.orderBy(filters.sort.key, filters.sort.order);
-            }
-
-            qb.offset(filters.start);
-            qb.limit(filters.limit);
-        }).fetchAll({
-            withRelated: filters.populate || populate
-        });
+        return Event.query(buildQuery({ model: Event, filters }))
+            .fetchAll({ withRelated })
+            .then(data => data.toJSON());
     },
 
     /**
@@ -74,21 +57,11 @@ module.exports = {
      * @return {Promise}
      */
 
-    count: (params) => {
+    count: (params, populate) => {
         // Convert `params` object to filters compatible with Bookshelf.
-        const filters = strapi.utils.models.convertParams('event', params);
+        const filters = convertRestQueryParams(params);
 
-        return Event.query(function(qb) {
-            _.forEach(filters.where, (where, key) => {
-                if (_.isArray(where.value)) {
-                    for (const value in where.value) {
-                        qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value]);
-                    }
-                } else {
-                    qb.where(key, where.symbol, where.value);
-                }
-            });
-        }).count();
+        return Event.query(buildQuery({ model: Event, filters: _.pick(filters, 'where') })).count();
     },
 
     /**

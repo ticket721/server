@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-// Public eth_node modules.
+// Public node modules.
 const _ = require('lodash');
 const request = require('request');
 
@@ -45,9 +45,9 @@ exports.connect = (provider, query) => {
       }
 
       try {
-        const users = await strapi.query('user', 'users-permissions').find(strapi.utils.models.convertParams('user', {
+        const users = await strapi.query('user', 'users-permissions').find({
           email: profile.email
-        }));
+        });
 
         const advanced = await strapi.store({
           environment: '',

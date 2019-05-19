@@ -16,11 +16,11 @@ module.exports = {
      * @return {Object|Array}
      */
 
-    find: async (ctx) => {
+    find: async (ctx, next, {populate} = {}) => {
         if (ctx.query._q) {
             return strapi.services.queuedevent.search(ctx.query);
         } else {
-            return strapi.services.queuedevent.fetchAll(ctx.query);
+            return strapi.services.queuedevent.fetchAll(ctx.query, populate);
         }
     },
 
@@ -40,8 +40,8 @@ module.exports = {
      * @return {Number}
      */
 
-    count: async (ctx) => {
-        return strapi.services.queuedevent.count(ctx.query);
+    count: async (ctx, next, {populate} = {}) => {
+        return strapi.services.queuedevent.count(ctx.query, populate);
     },
 
     /**
