@@ -1,5 +1,6 @@
 /* global Action */
 'use strict';
+const { convertRestQueryParams, buildQuery } = require('strapi-utils');
 
 /**
  * Action.js service
@@ -21,34 +22,17 @@ module.exports = {
      * @return {Promise}
      */
 
-    fetchAll: (params) => {
-        // Convert `params` object to filters compatible with Bookshelf.
-        const filters = strapi.utils.models.convertParams('action', params);
+    fetchAll: (params, populate) => {
         // Select field to populate.
-        const populate = Action.associations
+        const withRelated = populate || Action.associations
             .filter(ast => ast.autoPopulate !== false)
             .map(ast => ast.alias);
 
-        return Action.query(function(qb) {
-            _.forEach(filters.where, (where, key) => {
-                if (_.isArray(where.value) && where.symbol !== 'IN' && where.symbol !== 'NOT IN') {
-                    for (const value in where.value) {
-                        qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value])
-                    }
-                } else {
-                    qb.where(key, where.symbol, where.value);
-                }
-            });
+        const filters = convertRestQueryParams(params);
 
-            if (filters.sort) {
-                qb.orderBy(filters.sort.key, filters.sort.order);
-            }
-
-            qb.offset(filters.start);
-            qb.limit(filters.limit);
-        }).fetchAll({
-            withRelated: filters.populate || populate
-        });
+        return Action.query(buildQuery({ model: Action, filters }))
+            .fetchAll({ withRelated })
+            .then(data => data.toJSON());
     },
 
     /**
@@ -74,21 +58,11 @@ module.exports = {
      * @return {Promise}
      */
 
-    count: (params) => {
+    count: (params, populate) => {
         // Convert `params` object to filters compatible with Bookshelf.
-        const filters = strapi.utils.models.convertParams('action', params);
+        const filters = convertRestQueryParams(params);
 
-        return Action.query(function(qb) {
-            _.forEach(filters.where, (where, key) => {
-                if (_.isArray(where.value)) {
-                    for (const value in where.value) {
-                        qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value]);
-                    }
-                } else {
-                    qb.where(key, where.symbol, where.value);
-                }
-            });
-        }).count();
+        return Action.query(buildQuery({ model: Action, filters: _.pick(filters, 'where') })).count();
     },
 
     /**

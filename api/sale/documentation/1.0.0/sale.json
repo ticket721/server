@@ -571,8 +571,133 @@
             "enum": [
               "open",
               "closed",
-              "ended"
+              "ended",
+              "bought"
             ]
+          },
+          "event": {
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "tickets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "owner": {
+                "type": "string"
+              },
+              "eventcontract": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "banners": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "start": {
+                "type": "string"
+              },
+              "end": {
+                "type": "string"
+              },
+              "location": {
+                "type": "json"
+              },
+              "image": {
+                "type": "string"
+              },
+              "creation": {
+                "type": "string"
+              },
+              "sales": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "marketer": {
+            "required": [
+              "id",
+              "sources",
+              "build_arguments",
+              "action_arguments",
+              "symbol",
+              "name",
+              "t721_version",
+              "solidity_version",
+              "abi"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "sources": {
+                "type": "string"
+              },
+              "build_arguments": {
+                "type": "json"
+              },
+              "action_arguments": {
+                "type": "json"
+              },
+              "symbol": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "t721_version": {
+                "type": "string"
+              },
+              "solidity_version": {
+                "type": "string"
+              },
+              "binary": {
+                "type": "string"
+              },
+              "eventcontracts": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "abi": {
+                "type": "json"
+              },
+              "sales": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "price": {
+            "type": "json",
+            "default": ""
+          },
+          "update_height": {
+            "type": "integer",
+            "default": ""
           }
         }
       },
@@ -600,8 +725,23 @@
             "enum": [
               "open",
               "closed",
-              "ended"
+              "ended",
+              "bought"
             ]
+          },
+          "event": {
+            "type": "string"
+          },
+          "marketer": {
+            "type": "string"
+          },
+          "price": {
+            "type": "json",
+            "default": ""
+          },
+          "update_height": {
+            "type": "integer",
+            "default": ""
           }
         }
       }

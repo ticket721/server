@@ -1,5 +1,6 @@
 /* global Address */
 'use strict';
+const { convertRestQueryParams, buildQuery } = require('strapi-utils');
 
 /**
  * Address.js service
@@ -22,38 +23,21 @@ module.exports = {
      * @return {Promise}
      */
 
-    fetchAll: (params) => {
-        // Convert `params` object to filters compatible with Bookshelf.
+    fetchAll: (params, populate) => {
+        // Select field to populate.
 
         if (params.address)
             params.address = ethers.utils.getAddress(params.address.toLowerCase());
 
-        const filters = strapi.utils.models.convertParams('address', params);
-        // Select field to populate.
-        const populate = Address.associations
+        const withRelated = populate || Address.associations
             .filter(ast => ast.autoPopulate !== false)
             .map(ast => ast.alias);
 
-        return Address.query(function(qb) {
-            _.forEach(filters.where, (where, key) => {
-                if (_.isArray(where.value) && where.symbol !== 'IN' && where.symbol !== 'NOT IN') {
-                    for (const value in where.value) {
-                        qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value])
-                    }
-                } else {
-                    qb.where(key, where.symbol, where.value);
-                }
-            });
+        const filters = convertRestQueryParams(params);
 
-            if (filters.sort) {
-                qb.orderBy(filters.sort.key, filters.sort.order);
-            }
-
-            qb.offset(filters.start);
-            qb.limit(filters.limit);
-        }).fetchAll({
-            withRelated: filters.populate || populate
-        });
+        return Address.query(buildQuery({ model: Address, filters }))
+            .fetchAll({ withRelated })
+            .then(data => data.toJSON());
     },
 
     /**
@@ -64,6 +48,10 @@ module.exports = {
 
     fetch: (params) => {
         // Select field to populate.
+
+        if (params.address)
+            params.address = ethers.utils.getAddress(params.address.toLowerCase());
+
         const populate = Address.associations
             .filter(ast => ast.autoPopulate !== false)
             .map(ast => ast.alias);
@@ -79,21 +67,15 @@ module.exports = {
      * @return {Promise}
      */
 
-    count: (params) => {
+    count: (params, populate) => {
         // Convert `params` object to filters compatible with Bookshelf.
-        const filters = strapi.utils.models.convertParams('address', params);
 
-        return Address.query(function(qb) {
-            _.forEach(filters.where, (where, key) => {
-                if (_.isArray(where.value)) {
-                    for (const value in where.value) {
-                        qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value]);
-                    }
-                } else {
-                    qb.where(key, where.symbol, where.value);
-                }
-            });
-        }).count();
+        if (params.address)
+            params.address = ethers.utils.getAddress(params.address.toLowerCase());
+
+        const filters = convertRestQueryParams(params);
+
+        return Address.query(buildQuery({ model: Address, filters: _.pick(filters, 'where') })).count();
     },
 
     /**
