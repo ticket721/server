@@ -15,16 +15,6 @@
       "model": "ticket",
       "via": "sale"
     },
-    "end_block": {
-      "default": "",
-      "type": "integer",
-      "required": true
-    },
-    "begin_block": {
-      "default": "",
-      "type": "integer",
-      "required": true
-    },
     "status": {
       "default": "",
       "type": "enumeration",
@@ -40,17 +30,25 @@
       "model": "event",
       "via": "sales"
     },
-    "marketer": {
-      "model": "marketer",
-      "via": "sales"
+    "prices": {
+      "collection": "price",
+      "via": "sale"
     },
-    "price": {
-      "default": "",
-      "type": "json"
+    "live": {
+      "model": "ticket",
+      "via": "current_sale"
+    },
+    "end": {
+      "required": true,
+      "type": "date"
+    },
+    "begin": {
+      "required": true,
+      "type": "date"
     },
     "update_height": {
-      "default": "",
-      "type": "integer"
+      "type": "integer",
+      "required": true
     }
   }
 }

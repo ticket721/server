@@ -1,5 +1,7 @@
 'use strict';
 
+const { utils } = require('ethers');
+
 /**
  * User.js controller
  *
@@ -10,7 +12,68 @@ const _ = require('lodash');
 
 module.exports = {
 
-  /**
+    /**
+     * Sets the encrypted wallet
+     *
+     * @return {Object}
+     */
+
+    setWallet: async (ctx) => {
+
+        const user = ctx.state.user;
+
+        if (!user) {
+            return ctx.badRequest(null, [{ messages: [{ id: 'No authorization header was found' }] }]);
+        }
+
+        const { encrypted_wallet } = ctx.request.body;
+
+        try {
+
+            const parsed_encrypted_wallet = JSON.parse(encrypted_wallet);
+
+            if ((!parsed_encrypted_wallet.version)
+                || (!parsed_encrypted_wallet.address)
+                || (!parsed_encrypted_wallet.crypto)
+                || (!parsed_encrypted_wallet.crypto.ciphertext)
+                || (!parsed_encrypted_wallet.crypto.cipherparams)
+                || (!parsed_encrypted_wallet.crypto.cipherparams.iv)
+                || (!parsed_encrypted_wallet.crypto.cipher)
+                || (!parsed_encrypted_wallet.crypto.kdf)
+                || (!parsed_encrypted_wallet.crypto.kdfparams)
+                || (!parsed_encrypted_wallet.crypto.mac)) throw new Error('Invalid Locked Wallet Format: Required V3 Ethereum Wallet');
+
+
+            //await strapi.plugins['users-permissions'].services.user.setWallet(user.id, encrypted_wallet);
+            const formatted_address = utils.getAddress(`0x${parsed_encrypted_wallet.address}`);
+            let address = await strapi.services.address.fetchAll({
+                address: formatted_address
+            });
+            if (address.length === 0) {
+                address = await strapi.services.address.add({
+                    address: formatted_address,
+                    admin: false,
+                    event: false,
+                    username: user.username
+                });
+            } else {
+                address = address[0];
+            }
+            await strapi.plugins['users-permissions'].services.user.setWallet(user.id, encrypted_wallet, address.id);
+
+            const data = await strapi.plugins['users-permissions'].services.user.fetch(user.id);
+
+
+            // Send 200 `ok`
+            ctx.send(data);
+        } catch (e) {
+            console.error(e);
+            return ctx.badRequest(null, 'Invalid Ethereum V3 Locked Wallet provided');
+        }
+
+    },
+
+    /**
    * Retrieve user records.
    *
    * @return {Object|Array}

@@ -25,7 +25,8 @@ module.exports = {
     fetchAll: (params, populate) => {
         const withRelated = populate || Ticket.associations
             .filter(ast => ast.autoPopulate !== false)
-            .map(ast => ast.alias);
+            .map(ast => ast.alias)
+            .concat(['current_sale.prices']);
 
         const filters = convertRestQueryParams(params);
 

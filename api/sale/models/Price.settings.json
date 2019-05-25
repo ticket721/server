@@ -1,0 +1,25 @@
+{
+  "connection": "default",
+  "collectionName": "price",
+  "info": {
+    "name": "price",
+    "description": "Price for a sale. One sale can have multiple prices (multiple currencies)"
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "currency": {
+      "required": true,
+      "type": "string"
+    },
+    "value": {
+      "required": true,
+      "type": "string"
+    },
+    "sale": {
+      "model": "sale",
+      "via": "prices"
+    }
+  }
+}

@@ -1,13 +1,15 @@
 import * as Signale from 'signale';
 
-export const new_admin_fetch_call = async (AdministrationBoard: any, begin: number, end: number): Promise<any> =>
-    (await AdministrationBoard.getPastEvents('NewAdmin', {fromBlock: begin, toBlock: end} as any))
-        .map((event: any) =>
-            ({
-                block: event.blockNumber,
-                raw: event.raw.topics.concat([event.raw.data]),
-                tx_idx: event.transactionIndex
-            }));
+export const new_admin_fetch_call = async (AdministrationBoard: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
+    await Promise.all(
+        (await AdministrationBoard.getPastEvents('NewAdmin', {fromBlock: begin, toBlock: end} as any))
+            .map(async (event: any): Promise<any> =>
+                ({
+                    block: await block_fetcher(event.blockNumber),
+                    raw: event.raw.topics.concat([event.raw.data]),
+                    tx_idx: event.transactionIndex
+                }))
+    );
 
 export const new_admin_view_call = (raw: string[]): {by: string; to: string; id: number; infos: any } =>
     ({

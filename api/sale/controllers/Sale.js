@@ -38,7 +38,7 @@ module.exports = {
    * @return {Number}
    */
 
-  count: async (ctx, next, {populate}) => {
+  count: async (ctx, next, {populate} = {}) => {
     return strapi.services.sale.count(ctx.query, populate);
   },
 

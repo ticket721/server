@@ -58,10 +58,6 @@
       "default": "",
       "type": "json",
       "required": true
-    },
-    "sales": {
-      "collection": "sale",
-      "via": "marketer"
     }
   }
 }

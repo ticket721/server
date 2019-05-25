@@ -41,6 +41,10 @@
     "issuer": {
       "model": "address",
       "via": "issued"
+    },
+    "current_sale": {
+      "model": "sale",
+      "via": "live"
     }
   }
 }

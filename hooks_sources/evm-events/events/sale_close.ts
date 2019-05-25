@@ -1,20 +1,24 @@
 import * as Signale from 'signale';
 
-export const sale_close_fetch_call = async (T721: any, begin: number, end: number): Promise<any> =>
-    (await T721.getPastEvents('SaleClose', {fromBlock: begin, toBlock: end} as any))
-        .map((event: any) =>
-            ({
-                block: event.blockNumber,
-                raw: event.raw.topics,
-                tx_idx: event.transactionIndex
-            }));
+export const sale_close_fetch_call = async (T721: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
+    await Promise.all(
+        (await T721.getPastEvents('SaleClose', {fromBlock: begin, toBlock: end} as any))
+            .map(async (event: any): Promise<any> =>
+                ({
+                    block: await block_fetcher(event.blockNumber),
+                    raw: event.raw.topics,
+                    tx_idx: event.transactionIndex
+                }))
+    );
 
-export const sale_close_view_call = (raw: string[], block: number): {by: string; to: string; id: number; infos: any } =>
+export const sale_close_view_call = (raw: string[], block: any): {by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[3].slice(26),
         to: '0x' + raw[1].slice(26),
         id: parseInt(raw[2], 16),
-        infos: {}
+        infos: {
+            end: block.timestamp
+        }
     });
 
 export async function sale_close_bridge_action(db_by: any, db_to: any, id: number, block: number, infos: any): Promise<void> {
@@ -34,10 +38,13 @@ export async function sale_close_bridge_action(db_by: any, db_to: any, id: numbe
 
     const sale = await this.sale.where({ticket: db_id.id, status: 'open'}).fetch();
     sale.set({
-        end_block: block,
-        status: 'closed'
+        end: new Date(infos.end * 1000),
+        status: 'closed',
+        live: null
     });
     await sale.save();
+    db_id.set('current_sale', null);
+    await db_id.save();
 
     return ;
 
