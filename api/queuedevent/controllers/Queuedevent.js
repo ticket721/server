@@ -74,21 +74,21 @@ module.exports = {
 
             const code = await strapi.ethereum.web3.eth.getCode(tx_receipt.contractAddress);
 
-            const event_type = event_contracts.models.findIndex((model) => {
-                return code.toLowerCase() === model.attributes.runtime_binary;
+            const event_type = event_contracts.findIndex((model) => {
+                return code.toLowerCase() === model.runtime_binary;
             });
 
             if (event_type === -1) {
                 throw new Error('Invalid contract. On Chain code does not match known reference contracts');
             }
 
-            ctx.request.body.type = event_contracts.models[event_type].id;
+            ctx.request.body.type = event_contracts[event_type].id;
 
             const queued_event = await strapi.services.queuedevent.fetchAll({
                 address: tx_receipt.contractAddress
             });
 
-            if (queued_event.models.length !== 0) {
+            if (queued_event.length !== 0) {
                 throw new Error('Event already queued');
             }
 
@@ -96,7 +96,7 @@ module.exports = {
 
             let owner = await strapi.services.address.fetchAll({address: tx_receipt.from});
 
-            if (owner.models.length === 0) {
+            if (owner.length === 0) {
 
                 await strapi.services.address.add({
                     address: tx_receipt.from,
@@ -110,15 +110,16 @@ module.exports = {
 
             const contract_address = await strapi.services.address.fetchAll({address: tx_receipt.contractAddress});
 
-            if (contract_address.models.length !== 0) {
+            if (contract_address.length !== 0) {
                 throw new Error('Contract already live and present on the server');
             }
 
-            ctx.request.body.owner = owner.models[0].attributes.id;
+            ctx.request.body.owner = owner[0].id;
             ctx.request.body.address = tx_receipt.contractAddress;
             ctx.request.body.creation = new Date(Date.now());
 
         } catch (e) {
+            console.error(e);
             return ctx.response.badRequest(e);
         }
 

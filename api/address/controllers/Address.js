@@ -52,7 +52,8 @@ module.exports = {
                     events: tickets.map(ticket => ticket.event)
                 };
 
-                add.events = add.events.filter((event, idx) => add.events.findIndex((sub_event) => sub_event.id === event.id) === idx);
+
+                add.events = add.events.filter((event, idx) => add.events.findIndex((sub_event) => event && sub_event.id === event.id) === idx);
 
                 ret.push(add);
             }

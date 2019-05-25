@@ -511,9 +511,10 @@
       "Sale": {
         "required": [
           "id",
-          "end_block",
-          "begin_block",
-          "status"
+          "status",
+          "end",
+          "begin",
+          "update_height"
         ],
         "properties": {
           "id": {
@@ -554,16 +555,11 @@
               },
               "issuer": {
                 "type": "string"
+              },
+              "current_sale": {
+                "type": "string"
               }
             }
-          },
-          "end_block": {
-            "type": "integer",
-            "default": ""
-          },
-          "begin_block": {
-            "type": "integer",
-            "default": ""
           },
           "status": {
             "type": "string",
@@ -634,90 +630,92 @@
               }
             }
           },
-          "marketer": {
-            "required": [
-              "id",
-              "sources",
-              "build_arguments",
-              "action_arguments",
-              "symbol",
-              "name",
-              "t721_version",
-              "solidity_version",
-              "abi"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "sources": {
-                "type": "string"
-              },
-              "build_arguments": {
-                "type": "json"
-              },
-              "action_arguments": {
-                "type": "json"
-              },
-              "symbol": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "t721_version": {
-                "type": "string"
-              },
-              "solidity_version": {
-                "type": "string"
-              },
-              "binary": {
-                "type": "string"
-              },
-              "eventcontracts": {
-                "type": "array",
-                "items": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "currency",
+                "value"
+              ],
+              "properties": {
+                "id": {
                   "type": "string"
-                }
-              },
-              "abi": {
-                "type": "json"
-              },
-              "sales": {
-                "type": "array",
-                "items": {
+                },
+                "currency": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "sale": {
                   "type": "string"
                 }
               }
             }
           },
-          "price": {
-            "type": "json",
-            "default": ""
+          "live": {
+            "required": [
+              "id",
+              "ticket_id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "ticket_id": {
+                "type": "integer"
+              },
+              "owner": {
+                "type": "string"
+              },
+              "event": {
+                "type": "string"
+              },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mint_block": {
+                "type": "integer"
+              },
+              "sale": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "current_sale": {
+                "type": "string"
+              }
+            }
+          },
+          "end": {
+            "type": "string"
+          },
+          "begin": {
+            "type": "string"
           },
           "update_height": {
-            "type": "integer",
-            "default": ""
+            "type": "integer"
           }
         }
       },
       "NewSale": {
         "required": [
-          "end_block",
-          "begin_block",
-          "status"
+          "status",
+          "end",
+          "begin",
+          "update_height"
         ],
         "properties": {
           "ticket": {
             "type": "string"
-          },
-          "end_block": {
-            "type": "integer",
-            "default": ""
-          },
-          "begin_block": {
-            "type": "integer",
-            "default": ""
           },
           "status": {
             "type": "string",
@@ -732,16 +730,23 @@
           "event": {
             "type": "string"
           },
-          "marketer": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "live": {
             "type": "string"
           },
-          "price": {
-            "type": "json",
-            "default": ""
+          "end": {
+            "type": "string"
+          },
+          "begin": {
+            "type": "string"
           },
           "update_height": {
-            "type": "integer",
-            "default": ""
+            "type": "integer"
           }
         }
       }

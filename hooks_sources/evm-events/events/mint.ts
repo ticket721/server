@@ -1,13 +1,15 @@
 import * as Signale from 'signale';
 
-export const mint_fetch_call = async (T721: any, begin: number, end: number): Promise<any> =>
-    (await T721.getPastEvents('Mint', {fromBlock: begin, toBlock: end} as any))
-        .map((event: any) =>
-            ({
-                block: event.blockNumber,
-                raw: event.raw.topics,
-                tx_idx: event.transactionIndex
-            }));
+export const mint_fetch_call = async (T721: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
+    await Promise.all(
+        (await T721.getPastEvents('Mint', {fromBlock: begin, toBlock: end} as any))
+            .map(async (event: any): Promise<any> =>
+                ({
+                    block: await block_fetcher(event.blockNumber),
+                    raw: event.raw.topics,
+                    tx_idx: event.transactionIndex
+                }))
+    );
 
 export const mint_view_call = (raw: string[]): {by: string; to: string; id: number; infos: any } =>
     ({

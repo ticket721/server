@@ -39,10 +39,11 @@ export class EventFetcher {
      * @param end End Block
      */
     public readonly fetch = async (begin: number, end: number): Promise<void> => {
-        const res = (await this.fetch_call(begin, end))
+        const fetched = await this.fetch_call(begin, end);
+        const res = fetched
             .map((event: any) => ({
                 ...this.view_call(event.raw, event.block),
-                block: event.block,
+                block: event.block.number,
                 tx_idx: event.tx_idx,
                 type: this.name
             }));
