@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "sourceMap": false,
+        "outDir": "../modules",
+        "rootDir": "./",
+        "types": [
+            "jest",
+            "node",
+            "bookshelf"
+        ],
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "resolveJsonModule": true,
+        "downlevelIteration": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "./ModuleRunner.ts",
+        "./chain_settings_importer/index.ts"
+    ]
+}
