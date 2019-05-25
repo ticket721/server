@@ -18,9 +18,15 @@ Server to store contract data and events for ticket721
 
 | Name | Description |
 | :---: | :---------: |
-| `contracts:setup` | Depending on the `T721_SERVER` value, will raise any required instance of thrid-party softwares and will configure the configurations files for strapi. |
-| `contracts:start` | Checks that setup has been run properly, then starts the strapi backend. |
-| `contracts:clean` | Cleans everything that has been produced by the `contracts:setup` or `contracts:start` scripts |
+| `server:setup` | Depending on the `T721_SERVER` value, will raise any required instance of thrid-party softwares and will configure the configurations files for strapi. |
+| `server:start` | Checks that setup has been run properly, then starts the strapi backend. |
+| `server:clean` | Cleans everything that has been produced by the `server:setup` or `server:start` scripts |
+
+## Modules
+
+| Name | Description | Requirements |
+| :---: | :---: | :---: |
+| `chain_settings_importer` | Loads all event plugins, event contracts and network configurations into the database | `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME`, `ETH_NODE_PROTOCOL`, `ETH_NODE_HOST`, `ETH_NODE_PORT` |
 
 ## Setting up the server
 
@@ -50,3 +56,13 @@ The following command cleans the directory.
 ```shell
 env T721_SERVER=development gulp server:clean
 ```
+
+## Running chain settings importer
+
+```shell
+env DATABASE_HOST=127.0.0.1 DATABASE_PORT=5432 DATABASE_NAME=t721 \
+    DATABASE_USERNAME=admin DATABASE_PASSWORD=pass ETH_NODE_PROTOCOL=http \
+    ETH_NODE_HOST=127.0.0.1 ETH_NODE_PORT=8545 \
+    node ./modules/ModuleRunner.js chain_settings_importer
+```
+

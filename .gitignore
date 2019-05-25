@@ -110,6 +110,7 @@ package-lock.json
 portal
 .DS_Store
 hooks
+modules
 
 ###########################
 # Strapi

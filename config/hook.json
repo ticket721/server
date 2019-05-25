@@ -12,9 +12,9 @@
         ]
     },
     "ethereum_utils": {
-        "enabled": true
+        "enabled": false
     },
     "evm-events": {
-        "enabled": true
+        "enabled": false
     }
 }
