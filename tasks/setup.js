@@ -34,7 +34,7 @@ module.exports.tsc_modules = async function tsc_hooks() {
         ])
             .pipe(ts(tsc_config_modules.compilerOptions))
             .pipe(gulp.dest(from_current('./modules')))
-            .on('end', () => {process.chdir(save_dir); signale.success('Transpiled hooks'); ok()})
+            .on('end', () => {process.chdir(save_dir); signale.success('Transpiled modules'); ok()})
     });
 };
 

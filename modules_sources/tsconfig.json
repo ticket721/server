@@ -22,6 +22,7 @@
     ],
     "include": [
         "./ModuleRunner.ts",
-        "./chain_settings_importer/index.ts"
+        "./chain_settings_importer/index.ts",
+        "./antenna/index.ts"
     ]
 }
