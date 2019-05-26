@@ -1,20 +1,17 @@
 {
     "timeout": 10000,
     "load": {
-        "before": [],
+        "before": [
+            "knex"
+        ],
         "order": [
         ],
         "after": [
-            "knex",
             "bookshelf",
-            "ethereum_utils",
-            "evm-events"
+            "ethereum_utils"
         ]
     },
     "ethereum_utils": {
-        "enabled": false
-    },
-    "evm-events": {
-        "enabled": false
+        "enabled": true
     }
 }

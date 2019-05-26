@@ -27,6 +27,7 @@ main()
     .catch((e: Error): void => {
         Signale.fatal(`Module ${module_path} crashed`);
         Signale.fatal(e.message);
+        console.error(e);
         process.exit(1);
     })
     .then((): void => {

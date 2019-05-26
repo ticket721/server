@@ -42,6 +42,7 @@
         "@types/node": "^11.9.4",
         "bip39": "^3.0.2",
         "bookshelf": "^0.14.2",
+        "bookshelf-model-relations": "0.0.2",
         "coveralls": "^3.0.3",
         "dockerode": "^2.5.8",
         "eth-sig-util": "1.4.2",
