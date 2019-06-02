@@ -1,6 +1,5 @@
 import Knex = require('knex');
 import Bookshelf = require('bookshelf');
-import relations = require('bookshelf-model-relations');
 
 export let AddressModel = null;
 export let ActionModel = null;

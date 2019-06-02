@@ -2,7 +2,6 @@ import { eth } from '../misc/eth';
 
 import * as Signale    from 'signale';
 import * as Knex       from 'knex';
-import * as Bookshelf  from 'Bookshelf';
 import Web3 = require('web3');
 import { Portalize }   from 'portalize';
 import * as path       from 'path';
@@ -29,7 +28,7 @@ const start = async (): Promise<void> => {
         client: 'pg',
         connection: {
             host: process.env.DATABASE_HOST,
-            port: process.env.DATABASE_PORT,
+            port: parseInt(process.env.DATABASE_PORT),
             user: process.env.DATABASE_USERNAME,
             password: process.env.DATABASE_PASSWORD,
             database: process.env.DATABASE_NAME,

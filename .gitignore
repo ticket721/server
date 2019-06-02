@@ -126,3 +126,4 @@ api/minter/documentation/1.0.0/minter.json
 api/queuedevent/documentation/1.0.0/queuedevent.json
 api/ticket/documentation/1.0.0/ticket.json
 plugins/users-permissions/documentation/1.0.0/users-permissions-User.json
+modules_sources/**/*.js

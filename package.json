@@ -2,7 +2,7 @@
     "name": "@ticket721/server",
     "private": true,
     "version": "1.0.0",
-    "description": "t721-server - Server to store contract data and events for ticket72",
+    "description": "t721-server - Server to store contract data and events for ticket721",
     "main": "./server.js",
     "scripts": {
         "setup:complete": "cd admin && npm run setup --debug --plugins",

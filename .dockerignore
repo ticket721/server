@@ -1,0 +1,7 @@
+package-lock.json
+node_modules
+plugins/**/node_modules
+admin/node_modules
+modules_sources/node_modules
+modules_sources/package-lock.json
+.git
