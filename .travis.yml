@@ -2,10 +2,29 @@ language: node_js
 sudo: false
 node_js:
     - "10"
+services:
+    - docker
 install:
     - npm install
-script:
-    - npm run test:editorconfig
-    - npm run test:lint
-    - npm run test:jest
-    - npm run coverage:upload
+
+stages:
+    - name: test
+    - name: build
+      if: branch = ropsten AND type IN (push) OR branch = mainnet AND type IN (push)
+
+jobs:
+    include:
+        - stage: test
+          name: "Tests"
+          script:
+              - npm run test:editorconfig
+              - npm run test:lint
+              - npm run test:jest
+              - npm run coverage:upload
+        - stage: build
+          install: skip
+          name: "Build & Publish Docker Image"
+          script:
+              - ./build.sh
+              - npm install signale
+              - node publish.js

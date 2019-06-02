@@ -66,3 +66,18 @@ env DATABASE_HOST=127.0.0.1 DATABASE_PORT=5432 DATABASE_NAME=t721 \
     node ./modules/ModuleRunner.js chain_settings_importer
 ```
 
+## ENV Variables for the build process
+
+| Var Name | Details |
+| :---:    | :---:   |
+| `NEXUS_USERNAME` | Username to use to recover the portal |
+| `NEXUS_PASSWORD` | Password for given username |
+| `NEXUS_ENDPOINT` | Url of the nexus repo (no trailing `/`) |
+| `NEXUS_REPOSITORY` | Name of the repository |
+| `DOCKER_SERVER_MODULES_REPOSITORY` | Repository to push built server-modules images |
+| `DOCKER_SERVER_REPOSITORY` | Repository to push built server images |
+| `DOCKER_USERNAME` | Username for docker account |
+| `DOCKER_PASSWORD` | Password of docker account |
+
+All these variables are used in `build.sh` and `publish.js`
+

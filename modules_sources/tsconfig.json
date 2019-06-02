@@ -3,7 +3,6 @@
         "module": "commonjs",
         "target": "es5",
         "sourceMap": false,
-        "outDir": "../modules",
         "rootDir": "./",
         "types": [
             "jest",
