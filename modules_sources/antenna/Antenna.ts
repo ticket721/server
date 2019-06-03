@@ -54,9 +54,15 @@ const start = async (): Promise<void> => {
             throw new Error(`[${name}] Unknown Ethereum Node Communication protocol ${process.env.ETH_NODE_PROTOCOL}`);
     }
 
-    Signale.info(`[${name}] loading models`);
+    const T721V0Height = Portalize.get.get('T721V0.height.json', {module: 'contracts'});
+    let current_height = await web3.eth.getBlockNumber();
 
-    Signale.success(`[${name}] loaded models`);
+    while (current_height < T721V0Height.height) {
+        Signale.info(`[${name}] Current block is ${current_height}, expected height is ${T721V0Height.height}: waiting ...`);
+        await new Promise((ok: any, ko: any): any => setTimeout(ok, 10000));
+        current_height = await web3.eth.getBlockNumber();
+    }
+    Signale.success(`[${name}] Current block is ${current_height}, expected height is ${T721V0Height.height}: proceeding`);
 
     const eb = new EventBridge(web3);
 
