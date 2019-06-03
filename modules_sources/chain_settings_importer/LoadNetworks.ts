@@ -21,7 +21,7 @@ export const load_networks = async (NetworksModel: Bookshelf.Model<any>, web3: a
             if (file.indexOf('.artifact.json') !== -1) {
                 const artifact = require(from_current(path.join('./portal/contracts', file)));
 
-                if (artifact.networks[net_id]) {
+                if (artifact.networks && artifact.networks[net_id]) {
                     const code = (await web3.eth.getCode(artifact.networks[net_id].address)).toLowerCase();
 
                     contracts[artifact.name] = {
