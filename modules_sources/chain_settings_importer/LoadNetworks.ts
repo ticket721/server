@@ -38,9 +38,9 @@ export const load_networks = async (NetworksModel: Bookshelf.Model<any>, web3: a
             net_id,
             contracts: JSON.stringify(contracts),
             genesis_block_hash: genesis,
-            node_host: process.env.ETH_NODE_HOST,
-            node_port: process.env.ETH_NODE_PORT,
-            node_connection_protocol: process.env.ETH_NODE_PROTOCOL
+            node_host: process.env.PUBLIC_ETH_NODE_HOST || process.env.ETH_NODE_HOST,
+            node_port: process.env.PUBLIC_ETH_NODE_PORT || process.env.ETH_NODE_PORT,
+            node_connection_protocol: process.env.PUBLIC_ETH_NODE_PROTOCOL || process.env.ETH_NODE_PROTOCOL
         });
 
         await new_net_infos.save();
