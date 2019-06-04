@@ -23,35 +23,68 @@ const start = async (): Promise<void> => {
     Portalize.get.setModuleName('server');
 
     Signale.info(`[${name}] connecting to database`);
+    let knex: Knex = null;
+    const knex_tries = process.env.PG_CONNECTION_RETRIES || 10;
+    let try_idx = 0;
 
-    const knex: Knex = Knex({
-        client: 'pg',
-        connection: {
-            host: process.env.DATABASE_HOST,
-            port: parseInt(process.env.DATABASE_PORT),
-            user: process.env.DATABASE_USERNAME,
-            password: process.env.DATABASE_PASSWORD,
-            database: process.env.DATABASE_NAME,
-            timezone: 'utc',
-            ssl: !!process.env.DATABASE_SSL,
-            charset: 'utf8'
+    while (knex === null && try_idx < knex_tries) {
+        try {
+            knex = Knex({
+                client: 'pg',
+                connection: {
+                    host: process.env.DATABASE_HOST,
+                    port: parseInt(process.env.DATABASE_PORT),
+                    user: process.env.DATABASE_USERNAME,
+                    password: process.env.DATABASE_PASSWORD,
+                    database: process.env.DATABASE_NAME,
+                    timezone: 'utc',
+                    ssl: !!process.env.DATABASE_SSL,
+                    charset: 'utf8'
+                }
+            });
+            await knex.raw('select "height".* from height');
+        } catch (e) {
+            console.error(e);
+            knex = null;
+            Signale.warn(`[${name}] Cannot connect to postgres or postgres not ready, [${try_idx}/${knex_tries}]`);
+            ++try_idx;
+            if (try_idx >= knex_tries) {
+                process.exit(1);
+            }
+            await new Promise((ok: any, ko: any): any => setTimeout(ok, 10000));
         }
-    });
+    }
 
     init(knex);
 
     Signale.success(`[${name}] connection succesful`);
 
-    let web3;
+    let web3 = null;
+    const web3_tries = process.env.PG_CONNECTION_RETRIES || 10;
+    try_idx = 0;
 
-    switch (process.env.ETH_NODE_PROTOCOL) {
-        case 'http':
-        case 'https':
-            // @ts-ignore
-            web3 = new Web3(new Web3.providers.HttpProvider(`${process.env.ETH_NODE_PROTOCOL}://${process.env.ETH_NODE_HOST}:${process.env.ETH_NODE_PORT}`));
-            break;
-        default:
-            throw new Error(`[${name}] Unknown Ethereum Node Communication protocol ${process.env.ETH_NODE_PROTOCOL}`);
+    while (web3 === null && try_idx < web3_tries) {
+        try {
+            switch (process.env.ETH_NODE_PROTOCOL) {
+                case 'http':
+                case 'https':
+                    // @ts-ignore
+                    web3 = new Web3(new Web3.providers.HttpProvider(`${process.env.ETH_NODE_PROTOCOL}://${process.env.ETH_NODE_HOST}:${process.env.ETH_NODE_PORT}`));
+                    break;
+                default:
+                    throw new Error(`[${name}] Unknown Ethereum Node Communication protocol ${process.env.ETH_NODE_PROTOCOL}`);
+            }
+            const test_request = await web3.eth.getBlockNumber();
+        } catch (e) {
+            console.error(e);
+            web3 = null;
+            Signale.warn(`[${name}] Cannot connect to eth node, [${try_idx}/${web3_tries}]`);
+            ++try_idx;
+            if (try_idx >= web3_tries) {
+                process.exit(1);
+            }
+            await new Promise((ok: any, ko: any): any => setTimeout(ok, 10000));
+        }
     }
 
     const T721V0Height = Portalize.get.get('T721V0.height.json', {module: 'contracts'});
