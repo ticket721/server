@@ -13,12 +13,12 @@ import { delete_admin_fetch_call, delete_admin_view_call } from './events/delete
 import { update }                                          from './prices';
 import { HeightModel, SaleModel }     from './models';
 
-const get_height = async (height: any): Promise<any> => {
+const get_height = async (height: any, start_height: number): Promise<any> => {
 
     let ret = await height.where({}).fetch();
 
     if (ret === null) {
-        ret = new height({height: 0});
+        ret = new height({height: start_height});
         try {
             await ret.save();
         } catch (e) {
@@ -67,7 +67,7 @@ const update_open_sales_prices = async (web3: any, block: number): Promise<void>
 
 };
 
-export async function subscriber(net_id: number, web3: any, eb: EventBridge): Promise<void> {
+export async function subscriber(net_id: number, web3: any, eb: EventBridge, start_height: number): Promise<void> {
 
     const AdministrationBoardArtifact = Portalize.get.get('AdministrationBoardV0.artifact.json', {module: 'contracts'});
     const T721Artifact = Portalize.get.get('T721V0.artifact.json', {module: 'contracts'});
@@ -75,7 +75,7 @@ export async function subscriber(net_id: number, web3: any, eb: EventBridge): Pr
     const AdministrationBoard = new web3.eth.Contract(AdministrationBoardArtifact.abi, AdministrationBoardArtifact.networks[net_id].address);
     const T721 = new web3.eth.Contract(T721Artifact.abi, T721Artifact.networks[net_id].address);
 
-    const heights = await get_height(HeightModel);
+    const heights = await get_height(HeightModel, start_height);
     const fetchers: EventFetcher[] = [];
 
     const block_store = {};

@@ -88,6 +88,8 @@ const start = async (): Promise<void> => {
     }
 
     const T721V0Height = Portalize.get.get('T721V0.height.json', {module: 'contracts'});
+    const ABV0Height = Portalize.get.get('AdministrationBoardV0.height.json', {module: 'contracts'});
+
     let current_height = await web3.eth.getBlockNumber();
 
     while (current_height < T721V0Height.height) {
@@ -101,7 +103,7 @@ const start = async (): Promise<void> => {
 
     const net_id = await web3.eth.net.getId();
 
-    await subscriber(net_id, web3, eb);
+    await subscriber(net_id, web3, eb, ABV0Height.height);
 
 };
 

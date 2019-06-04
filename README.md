@@ -49,21 +49,32 @@ Configuration checks will make the command fail if any configuration is missing.
 env T721_SERVER=development gulp server:start
 ```
 
+This will start the api, but you need to run the `server-modules` alongside. The server modules handle all the database background modifications, that cannot be done in the API.
+
+To run the two `server-modules`, go into two other terminals and do
+
+```shell
+env DATABASE_HOST=127.0.0.1 DATABASE_PORT=5432 DATABASE_NAME=t721 \
+    DATABASE_USERNAME=admin DATABASE_PASSWORD=pass ETH_NODE_PROTOCOL=http \
+    ETH_NODE_HOST=127.0.0.1 ETH_NODE_PORT=8545 \
+    node ./modules_sources/ModuleRunner.js chain_settings_importer
+```
+
+and
+
+```shell
+env DATABASE_HOST=127.0.0.1 DATABASE_PORT=5432 DATABASE_NAME=t721 \
+    DATABASE_USERNAME=admin DATABASE_PASSWORD=pass ETH_NODE_PROTOCOL=http \
+    ETH_NODE_HOST=127.0.0.1 ETH_NODE_PORT=8545 \
+    node ./modules_sources/ModuleRunner.js antenna
+```
+
 ## Cleaning the server
 
 The following command cleans the directory.
 
 ```shell
 env T721_SERVER=development gulp server:clean
-```
-
-## Running chain settings importer
-
-```shell
-env DATABASE_HOST=127.0.0.1 DATABASE_PORT=5432 DATABASE_NAME=t721 \
-    DATABASE_USERNAME=admin DATABASE_PASSWORD=pass ETH_NODE_PROTOCOL=http \
-    ETH_NODE_HOST=127.0.0.1 ETH_NODE_PORT=8545 \
-    node ./modules/ModuleRunner.js chain_settings_importer
 ```
 
 ## ENV Variables for the build process
