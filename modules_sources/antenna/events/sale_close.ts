@@ -9,17 +9,20 @@ export const sale_close_fetch_call = async (T721: any, block_fetcher: any, begin
                 ({
                     block: await block_fetcher(event.blockNumber),
                     raw: event.raw.topics,
-                    tx_idx: event.transactionIndex
+                    tx_idx: event.transactionIndex,
+                    tx_hash: event.transactionHash
                 }))
     );
 
-export const sale_close_view_call = (raw: string[], block: any): { by: string; to: string; id: number; infos: any } =>
+export const sale_close_view_call = (raw: string[], block: any, tx_hash: string): { by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[3].slice(26),
         to: '0x' + raw[1].slice(26),
         id: parseInt(raw[2], 16),
         infos: {
-            end: block.timestamp
+            event_timestamp: block.timestamp,
+            end: block.timestamp,
+            tx_hash
         }
     });
 
@@ -33,7 +36,9 @@ export async function sale_close_bridge_action(db_by: any, db_to: any, id: numbe
         on_ticket: db_id.id,
         action_type: 'sale_close',
         infos: infos,
-        block: block
+        block: block,
+        tx_hash: infos.tx_hash,
+        action_timestamp: new Date(infos.event_timestamp * 1000)
     });
 
     await action.save();
