@@ -7,16 +7,20 @@ export const delete_admin_fetch_call = async (AdministrationBoard: any, block_fe
                 ({
                     block: await block_fetcher(event.blockNumber),
                     raw: event.raw.topics.concat([event.raw.data]),
-                    tx_idx: event.transactionIndex
+                    tx_idx: event.transactionIndex,
+                    tx_hash: event.transactionHash
                 }))
     );
 
-export const delete_admin_view_call = (raw: string[]): {by: string; to: string; id: number; infos: any } =>
+export const delete_admin_view_call = (raw: string[], block: any, tx_hash: string): {by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[1].slice(26),
         to: '0x' + raw[1].slice(26),
         id: 0,
-        infos: {}
+        infos: {
+            event_timestamp: block.timestamp,
+            tx_hash
+        }
     });
 
 export async function delete_admin_bridge_action(db_by: any, db_to: any, id: number, block: number, infos: any): Promise<void> {

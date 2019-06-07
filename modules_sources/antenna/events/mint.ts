@@ -10,18 +10,21 @@ export const mint_fetch_call = async (T721: any, block_fetcher: any, begin: numb
                 ({
                     block: await block_fetcher(event.blockNumber),
                     raw: event.raw.topics.concat([`0x${event.raw.data.slice(2, 64 + 2)}`, `0x${event.raw.data.slice(2 + 64)}`]),
-                    tx_idx: event.transactionIndex
+                    tx_idx: event.transactionIndex,
+                    tx_hash: event.transactionHash
                 }))
     );
 
-export const mint_view_call = (raw: string[]): { by: string; to: string; id: number; infos: any } =>
+export const mint_view_call = (raw: string[], block: any, tx_hash: string): { by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[3].slice(26),
         to: '0x' + raw[1].slice(26),
         id: parseInt(raw[2], 16),
         infos: {
+            event_timestamp: block.timestamp,
             price: raw[4],
-            currency: raw[5]
+            currency: raw[5],
+            tx_hash
         }
     });
 
@@ -36,7 +39,9 @@ export async function mint_bridge_action(db_by: any, db_to: any, id: number, blo
         on_ticket: db_id.id,
         action_type: 'mint',
         infos: infos,
-        block: block
+        block: block,
+        tx_hash: infos.tx_hash,
+        action_timestamp: new Date(infos.event_timestamp * 1000)
     });
     await action.save();
 
@@ -51,7 +56,7 @@ export async function mint_bridge_action(db_by: any, db_to: any, id: number, blo
             owner: db_to.id,
             event: event.id,
             issuer: db_to.id,
-            creation: new Date(Date.now()),
+            creation: new Date(infos.event_timestamp * 1000),
             mint_price: decimal_price,
             mint_currency: currency
         });
@@ -61,7 +66,7 @@ export async function mint_bridge_action(db_by: any, db_to: any, id: number, blo
             owner: db_to.id,
             event: null,
             issuer: db_to.id,
-            creation: new Date(Date.now()),
+            creation: new Date(infos.event_timestamp * 1000),
             mint_price: decimal_price,
             mint_currency: currency
         });
