@@ -45,6 +45,15 @@
     "current_sale": {
       "model": "sale",
       "via": "live"
+    },
+    "creation": {
+      "type": "date"
+    },
+    "mint_price": {
+      "type": "string"
+    },
+    "mint_currency": {
+      "type": "string"
     }
   }
 }

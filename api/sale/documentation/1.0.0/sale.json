@@ -558,6 +558,15 @@
               },
               "current_sale": {
                 "type": "string"
+              },
+              "creation": {
+                "type": "string"
+              },
+              "mint_price": {
+                "type": "string"
+              },
+              "mint_currency": {
+                "type": "string"
               }
             }
           },
@@ -691,6 +700,15 @@
                 "type": "string"
               },
               "current_sale": {
+                "type": "string"
+              },
+              "creation": {
+                "type": "string"
+              },
+              "mint_price": {
+                "type": "string"
+              },
+              "mint_currency": {
                 "type": "string"
               }
             }

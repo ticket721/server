@@ -9,16 +9,20 @@ export const transfer_fetch_call = async (T721: any, block_fetcher: any, begin: 
                 ({
                     block: await block_fetcher(event.blockNumber),
                     raw: event.raw.topics.concat([event.raw.data]),
-                    tx_idx: event.transactionIndex
+                    tx_idx: event.transactionIndex,
+                    tx_hash: event.transactionHash
                 }))
     );
 
-export const transfer_view_call = (raw: string[]): { by: string; to: string; id: number; infos: any } =>
+export const transfer_view_call = (raw: string[], block: any, tx_hash: string): { by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[1].slice(26),
         to: '0x' + raw[2].slice(26),
         id: parseInt(raw[3], 16),
-        infos: {}
+        infos: {
+            event_timestamp: block.timestamp,
+            tx_hash
+        }
     });
 
 export async function transfer_bridge_action(db_by: any, db_to: any, id: number, block: number, infos: any): Promise<void> {
@@ -31,7 +35,9 @@ export async function transfer_bridge_action(db_by: any, db_to: any, id: number,
         on_ticket: db_id.id,
         action_type: 'transfer',
         infos: infos,
-        block: block
+        block: block,
+        tx_hash: infos.tx_hash,
+        action_timestamp: new Date(infos.event_timestamp * 1000)
     });
     await action.save();
 

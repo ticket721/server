@@ -1,4 +1,5 @@
 import * as Signale from 'signale';
+import { BigNumber }  from 'ethers/utils';
 
 import { ActionModel, EventModel } from '../models';
 
@@ -8,22 +9,29 @@ export const mint_fetch_call = async (T721: any, block_fetcher: any, begin: numb
             .map(async (event: any): Promise<any> =>
                 ({
                     block: await block_fetcher(event.blockNumber),
-                    raw: event.raw.topics,
-                    tx_idx: event.transactionIndex
+                    raw: event.raw.topics.concat([`0x${event.raw.data.slice(2, 64 + 2)}`, `0x${event.raw.data.slice(2 + 64)}`]),
+                    tx_idx: event.transactionIndex,
+                    tx_hash: event.transactionHash
                 }))
     );
 
-export const mint_view_call = (raw: string[]): { by: string; to: string; id: number; infos: any } =>
+export const mint_view_call = (raw: string[], block: any, tx_hash: string): { by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[3].slice(26),
         to: '0x' + raw[1].slice(26),
         id: parseInt(raw[2], 16),
-        infos: {}
+        infos: {
+            event_timestamp: block.timestamp,
+            price: raw[4],
+            currency: raw[5],
+            tx_hash
+        }
     });
 
 export async function mint_bridge_action(db_by: any, db_to: any, id: number, block: number, infos: any): Promise<void> {
 
     Signale.info(`[evm-events][mint] by: ${db_by.attributes.address} to: ${db_to.attributes.address} id: ${id} block: ${block}`);
+
     const {db_id}: { db_id: any; } = await this.ticket_check(id);
     const action = new ActionModel({
         by: db_by.id,
@@ -31,9 +39,14 @@ export async function mint_bridge_action(db_by: any, db_to: any, id: number, blo
         on_ticket: db_id.id,
         action_type: 'mint',
         infos: infos,
-        block: block
+        block: block,
+        tx_hash: infos.tx_hash,
+        action_timestamp: new Date(infos.event_timestamp * 1000)
     });
     await action.save();
+
+    const decimal_price = new BigNumber(infos.price).toString();
+    const currency = `0x${infos.currency.slice(26)}`;
 
     const event = await EventModel.where({address: db_to.id}).fetch();
 
@@ -42,14 +55,20 @@ export async function mint_bridge_action(db_by: any, db_to: any, id: number, blo
             mint_block: block,
             owner: db_to.id,
             event: event.id,
-            issuer: db_to.id
+            issuer: db_to.id,
+            creation: new Date(infos.event_timestamp * 1000),
+            mint_price: decimal_price,
+            mint_currency: currency
         });
     } else {
         db_id.set({
             mint_block: block,
             owner: db_to.id,
             event: null,
-            issuer: db_to.id
+            issuer: db_to.id,
+            creation: new Date(infos.event_timestamp * 1000),
+            mint_price: decimal_price,
+            mint_currency: currency
         });
     }
     await db_id.save();

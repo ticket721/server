@@ -48,6 +48,14 @@
       "default": "",
       "type": "integer",
       "required": true
+    },
+    "tx_hash": {
+      "required": true,
+      "type": "string"
+    },
+    "action_timestamp": {
+      "required": true,
+      "type": "date"
     }
   }
 }
