@@ -40,7 +40,6 @@ const close_outdated_sales = async (end: Date): Promise<void> => {
 
     if (sales.length) {
         for (const sale of sales.models) {
-            console.log('closing', sale.attributes.id);
             sale.set({status: 'ended', live: null});
             sale.relations.ticket.set('current_sale', null);
             await sale.relations.ticket.save();

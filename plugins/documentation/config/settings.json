@@ -25,8 +25,8 @@
       "description": "Development server"
     },
     {
-      "url": "YOUR_STAGING_SERVER",
-      "description": "Staging server server"
+      "url": "https://api.ropsten.ticket721.com",
+      "description": "Staging server"
     },
     {
       "url": "YOUR_PRODUCTION_SERVER",

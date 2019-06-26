@@ -26,7 +26,8 @@ Server to store contract data and events for ticket721
 
 | Name | Description | Requirements |
 | :---: | :---: | :---: |
-| `chain_settings_importer` | Loads all event plugins, event contracts and network configurations into the database | `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME`, `ETH_NODE_PROTOCOL`, `ETH_NODE_HOST`, `ETH_NODE_PORT` |
+| `chain_settings_importer` | Loads all event plugins, event contracts and network configurations into the database. For the `PUBLIC` informations of the ethereum node, it's what is going to be sent as connection url to the frontend. The values without public are used to connect from the module | `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME`, `ETH_NODE_PROTOCOL`, `ETH_NODE_HOST`, `ETH_NODE_PORT`, `PUBLIC_ETH_NODE_PROTOCOL`, `PUBLIC_ETH_NODE_HOST`, `PUBLIC_ETH_NODE_PORT` |
+| `chain_settings_importer` | Polls the eth node and write informations to database | `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME`, `ETH_NODE_PROTOCOL`, `ETH_NODE_HOST`, `ETH_NODE_PORT` |
 
 ## Setting up the server
 
@@ -46,7 +47,7 @@ The following command required `server:setup` to be run.
 Configuration checks will make the command fail if any configuration is missing.
 
 ```shell
-env T721_SERVER=development gulp server:start
+env T721_SERVER=development ETH_NODE_PROTOCOL=http ETH_NODE_HOST=localhost ETH_NODE_PORT=8545 gulp server:start
 ```
 
 This will start the api, but you need to run the `server-modules` alongside. The server modules handle all the database background modifications, that cannot be done in the API.

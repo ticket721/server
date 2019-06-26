@@ -55,12 +55,33 @@ module.exports = {
     // check that code is matching one of the eventcontracts
     create: async (ctx) => {
 
-        try {
+        if (!ctx.request.body.transaction_hash) {
+            return ctx.response.badRequest(`No transaction hash provided`);
+        }
 
+        try {
 
             const event_contracts = await strapi.services.eventcontract.fetchAll({});
 
-            const tx_receipt = await strapi.ethereum.web3.eth.getTransactionReceipt(ctx.request.body.transaction_hash);
+            let tx_receipt = null;
+            let tries = 0;
+
+            while (tries < 40 && tx_receipt === null) {
+                try {
+                    console.log(`[INFO] Fetching tx ${ctx.request.body.transaction_hash}`);
+                    tx_receipt = await strapi.ethereum.web3.eth.getTransactionReceipt(ctx.request.body.transaction_hash);
+                    console.log(`[INFO] Fetched tx ${ctx.request.body.transaction_hash}`);
+                } catch (e) {
+                    tx_receipt = null;
+                    console.error(`Cannot find transaction, waiting 5 sec and retrying [${tries}/40]`);
+                    ++tries;
+                    await new Promise((ok, ko) => setTimeout(ok, 5000));
+                }
+            }
+
+            if (tries === 40) {
+                return ctx.response.notFound(`Cannot find transaction ${ctx.request.body.transaction_hash}`);
+            }
 
             if (tx_receipt === null) {
                 throw new Error('Invalid transaction hash. Transaction not found.')
