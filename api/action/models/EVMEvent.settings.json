@@ -1,0 +1,19 @@
+{
+  "connection": "default",
+  "collectionName": "evmevent",
+  "info": {
+    "name": "evmevent",
+    "description": "An evmevent is and EVM Event"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "hash": {
+      "required": true,
+      "type": "string"
+    }
+  }
+}

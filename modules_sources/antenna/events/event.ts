@@ -2,6 +2,7 @@ import * as Signale from 'signale';
 import * as BIP39 from 'bip39';
 
 import { ActionModel, ECModel, QEModel, EventModel, UploadFileMorphModel } from '../models';
+import { available, register, signature }                                  from './signature';
 
 export const event_fetch_call = async (T721: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
     await Promise.all(
@@ -11,23 +12,31 @@ export const event_fetch_call = async (T721: any, block_fetcher: any, begin: num
                     block: await block_fetcher(event.blockNumber),
                     raw: event.raw.topics,
                     tx_idx: event.transactionIndex,
-                    tx_hash: event.transactionHash
+                    tx_hash: event.transactionHash,
+                    log_idx: event.logIndex
                 }))
     );
 
-export const event_view_call = (raw: string[], block: any, tx_hash: string): {by: string; to: string; id: number; infos: any } =>
+export const event_view_call = (raw: string[], block: any, tx_hash: string, log_idx: number): {by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[1].slice(26),
         to: '0x' + raw[2].slice(26),
         id: 0,
         infos: {
             event_timestamp: block.timestamp,
-            tx_hash
+            tx_hash,
+            event_signature: signature(raw, 'Event', tx_hash, log_idx)
         }
     });
 
 export async function event_bridge_action(db_by: any, db_to: any, id: number, block: number, infos: any): Promise<void> {
     Signale.info(`[evm-events][event] created by: ${db_by.attributes.address} at address: ${db_to.attributes.address} block: ${block}`);
+
+    if (!await available(infos.event_signature)) {
+        Signale.warn(`[evm-events][event] created by: ${db_by.attributes.address} at address: ${db_to.attributes.address} block: ${block} | Already registered`);
+        return ;
+    }
+
     const action = new ActionModel({
         by: db_by.id,
         to: db_to.id,
@@ -115,6 +124,8 @@ export async function event_bridge_action(db_by: any, db_to: any, id: number, bl
     db_to.set('linked_event', event.id);
 
     await db_to.save();
+
+    await register(infos.event_signature);
 
     return ;
 }

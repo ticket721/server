@@ -1,6 +1,7 @@
 import * as Signale from 'signale';
 
-import { ActionModel, SaleModel } from '../models';
+import { ActionModel, SaleModel }         from '../models';
+import { available, register, signature } from './signature';
 
 export const sale_close_fetch_call = async (T721: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
     await Promise.all(
@@ -10,11 +11,12 @@ export const sale_close_fetch_call = async (T721: any, block_fetcher: any, begin
                     block: await block_fetcher(event.blockNumber),
                     raw: event.raw.topics,
                     tx_idx: event.transactionIndex,
-                    tx_hash: event.transactionHash
+                    tx_hash: event.transactionHash,
+                    log_idx: event.logIndex
                 }))
     );
 
-export const sale_close_view_call = (raw: string[], block: any, tx_hash: string): { by: string; to: string; id: number; infos: any } =>
+export const sale_close_view_call = (raw: string[], block: any, tx_hash: string, log_idx: number): { by: string; to: string; id: number; infos: any } =>
     ({
         by: '0x' + raw[3].slice(26),
         to: '0x' + raw[1].slice(26),
@@ -22,13 +24,20 @@ export const sale_close_view_call = (raw: string[], block: any, tx_hash: string)
         infos: {
             event_timestamp: block.timestamp,
             end: block.timestamp,
-            tx_hash
+            tx_hash,
+            event_signature: signature(raw, 'SaleClose', tx_hash, log_idx)
         }
     });
 
 export async function sale_close_bridge_action(db_by: any, db_to: any, id: number, block: number, infos: any): Promise<void> {
 
     Signale.info(`[evm-events][sale_close] by: ${db_by.attributes.address} to: ${db_to.attributes.address} id: ${id} block: ${block}`);
+
+    if (!await available(infos.event_signature)) {
+        Signale.warn(`[evm-events][sale_close] by: ${db_by.attributes.address} to: ${db_to.attributes.address} id: ${id} block: ${block} | Already registered`);
+        return ;
+    }
+
     const {db_id}: { db_id: any; } = await this.ticket_check(id);
     const action = new ActionModel({
         by: db_by.id,
@@ -52,6 +61,8 @@ export async function sale_close_bridge_action(db_by: any, db_to: any, id: numbe
     await sale.save();
     db_id.set('current_sale', null);
     await db_id.save();
+
+    await register(infos.event_signature);
 
     return;
 

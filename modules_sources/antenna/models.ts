@@ -15,6 +15,7 @@ export let MarketerModel = null;
 export let ApproverModel = null;
 export let UploadFileModel = null;
 export let UploadFileMorphModel = null;
+export let EVMEventModel = null;
 
 export const init = (knex: Knex): void => {
 
@@ -32,6 +33,7 @@ export const init = (knex: Knex): void => {
     ApproverModel = bs.model('Approver', (bs.Model.extend({tableName: 'approver', hasTimestamps: true}) as any) as Bookshelf.Model<any>);
     UploadFileMorphModel = bs.model('UploadFileMorph', (bs.Model.extend({tableName: 'upload_file_morph'}) as any) as Bookshelf.Model<any>);
     UploadFileModel = bs.model('UploadFile', (bs.Model.extend({tableName: 'upload_file'}) as any) as Bookshelf.Model<any>);
+    EVMEventModel = bs.model('EVMEvent', (bs.Model.extend({tableName: 'evmevent'}) as any) as Bookshelf.Model<any>);
 
     QEModel = bs.model('QueuedEvent', (bs.Model.extend({tableName: 'queuedevents', hasTimestamps: true,
         image (): any {
