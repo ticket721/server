@@ -13,7 +13,7 @@ export type ViewOutput = {
 };
 
 export type FetchCall = (from: number, to: number) => Promise<FetchInfos[]>;
-export type FetchView = (raw: string[], block: number, tx_hash: string) => ViewOutput;
+export type FetchView = (raw: string[], block: number, tx_hash: string, log_idx: number) => ViewOutput;
 export type Forward = (args: Args[]) => Promise<void>;
 
 /**
@@ -42,7 +42,7 @@ export class EventFetcher {
         const fetched = await this.fetch_call(begin, end);
         const res = fetched
             .map((event: any) => ({
-                ...this.view_call(event.raw, event.block, event.tx_hash),
+                ...this.view_call(event.raw, event.block, event.tx_hash, event.log_idx),
                 block: event.block.number,
                 tx_idx: event.tx_idx,
                 type: this.name
