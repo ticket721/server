@@ -1,6 +1,7 @@
 'use strict';
 
 const { utils } = require('ethers');
+const EthSigUtil = require('eth-sig-util');
 
 /**
  * Queuedevent.js controller
@@ -154,7 +155,119 @@ module.exports = {
      */
 
     update: async (ctx, next) => {
-        return strapi.services.queuedevent.edit(ctx.params, ctx.request.body) ;
+        const edit_body = ctx.request.body.body;
+        const edit_signature = ctx.request.body.signature;
+        const date = Date.now();
+
+
+        if (!edit_body || !edit_signature) {
+            return ctx.response.unauthorized();
+        }
+
+        const authorized_fields = ['name', 'description', 'start', 'end', 'location', 'image', 'banners', 'timestamp'];
+
+        for (const field of edit_body) {
+            if (authorized_fields.indexOf(field.name) === -1) {
+                return ctx.response.badRequest(`Illegal field in signature payload: ${field.name}`);
+            }
+        }
+
+        const timestamp_idx = edit_body.findIndex((elem) => elem.name === 'timestamp');
+
+        if (timestamp_idx === -1 || typeof edit_body[timestamp_idx].value !== 'number') {
+            return ctx.response.badRequest('Missing timestamp');
+        }
+
+        if (date > edit_body[timestamp_idx].value + (2 * 60 * 1000)) {
+            return ctx.response.clientTimeout();
+        }
+
+        try {
+            const signer = EthSigUtil.recoverTypedSignature({
+                data: edit_body,
+                sig: edit_signature
+            });
+
+            const event = await strapi.services.queuedevent.fetch(ctx.params);
+            const owner = await strapi.services.address.fetch({id: event.attributes.owner});
+
+            if (!event || !owner || signer.toLowerCase() !== owner.attributes.address.toLowerCase()) {
+                return ctx.response.unauthorized();
+            }
+
+            const ignored_fields = ['timestamp'];
+
+            const body = {};
+            edit_body
+                .filter((elem) => ignored_fields.indexOf(elem.name) === -1)
+                .filter((elem) => {
+                    if (['start', 'end'].indexOf(elem.name) !== -1) {
+                        if (elem.value === 'none') {
+                            return false;
+                        } else {
+                            elem.value = new Date(parseInt(elem.value));
+                            return true;
+                        }
+                    } else return true
+                })
+                .filter((elem) => {
+                    if (['location'].indexOf(elem.name) !== -1) {
+                        if (elem.value === 'none') {
+                            return false;
+                        } else {
+                            try {
+                                const load = JSON.parse(elem.value);
+
+                                if (!load.label || typeof load.label !== 'string') {
+                                    console.error('Invalid location label in payload');
+                                    return false;
+                                }
+
+                                if (!load.location || load.location.lat === undefined || load.location.lat === null || load.location.lng === undefined || load.location.lng === null) {
+                                    console.error('Invalid location in payload');
+                                    return false;
+                                }
+
+                                elem.value = {
+                                    label: load.label,
+                                    location: {
+                                        lat: load.location.lat,
+                                        lng: load.location.lng
+                                    }
+                                }
+
+                            } catch (e) {
+                                console.error('Invalid location in payload');
+                                return false;
+                            }
+
+                            return true;
+                        }
+                    } else return true
+                })
+                .forEach((elem) => body[elem.name] = elem.value);
+
+            if (body.name && body.name.length >= 50) {
+                return ctx.response.badRequest('Name cannot exceed 50 characters');
+            }
+
+            if (body.description && body.description.length >= 1000) {
+                return ctx.response.badRequest('Description cannot exceed 1000 characters');
+            }
+
+            if (body.image) {
+                body.image = parseInt(body.image);
+            }
+
+            if (body.banners) {
+                body.banners = JSON.parse(body.banners);
+            }
+
+            return strapi.services.queuedevent.edit(ctx.params, body) ;
+
+        } catch (e) {
+            return ctx.response.badRequest();
+        }
     },
 
     /**
