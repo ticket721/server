@@ -69,7 +69,7 @@ module.exports = {
             return ctx.response.unauthorized();
         }
 
-        const authorized_fields = ['name', 'description', 'start', 'end', 'location', 'timestamp'];
+        const authorized_fields = ['name', 'description', 'start', 'end', 'location', 'image', 'banners', 'timestamp'];
 
         for (const field of edit_body) {
             if (authorized_fields.indexOf(field.name) === -1) {
@@ -158,6 +158,14 @@ module.exports = {
 
             if (body.description && body.description.length >= 1000) {
                 return ctx.response.badRequest('Description cannot exceed 1000 characters');
+            }
+
+            if (body.image) {
+                body.image = parseInt(body.image);
+            }
+
+            if (body.banners) {
+                body.banners = JSON.parse(body.banners);
             }
 
             return strapi.services.event.edit(ctx.params, body) ;
