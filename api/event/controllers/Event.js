@@ -93,8 +93,8 @@ module.exports = {
                 sig: edit_signature
             });
 
-            const event = await strapi.services.event.fetch(ctx.event);
-            const owner = await strapi.services.address.fetch(event.attributes.owner);
+            const event = await strapi.services.event.fetch(ctx.params);
+            const owner = await strapi.services.address.fetch({id: event.attributes.owner});
 
             if (!event || !owner || signer.toLowerCase() !== owner.attributes.address.toLowerCase()) {
                 return ctx.response.unauthorized();
