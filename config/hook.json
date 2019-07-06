@@ -8,10 +8,14 @@
         ],
         "after": [
             "bookshelf",
-            "ethereum_utils"
+            "ethereum_utils",
+            "knex_utils"
         ]
     },
     "ethereum_utils": {
+        "enabled": true
+    },
+    "knex_utils": {
         "enabled": true
     }
 }

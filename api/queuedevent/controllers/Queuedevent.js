@@ -200,50 +200,43 @@ module.exports = {
             const body = {};
             edit_body
                 .filter((elem) => ignored_fields.indexOf(elem.name) === -1)
+                .filter((elem) => (elem.value !== 'none'))
                 .filter((elem) => {
                     if (['start', 'end'].indexOf(elem.name) !== -1) {
-                        if (elem.value === 'none') {
-                            return false;
-                        } else {
-                            elem.value = new Date(parseInt(elem.value));
-                            return true;
-                        }
-                    } else return true
+                        elem.value = new Date(parseInt(elem.value));
+                    }
+                    return true;
                 })
                 .filter((elem) => {
                     if (['location'].indexOf(elem.name) !== -1) {
-                        if (elem.value === 'none') {
-                            return false;
-                        } else {
-                            try {
-                                const load = JSON.parse(elem.value);
+                        try {
+                            const load = JSON.parse(elem.value);
 
-                                if (!load.label || typeof load.label !== 'string') {
-                                    console.error('Invalid location label in payload');
-                                    return false;
-                                }
+                            if (!load.label || typeof load.label !== 'string') {
+                                console.error('Invalid location label in payload');
+                                return false;
+                            }
 
-                                if (!load.location || load.location.lat === undefined || load.location.lat === null || load.location.lng === undefined || load.location.lng === null) {
-                                    console.error('Invalid location in payload');
-                                    return false;
-                                }
-
-                                elem.value = {
-                                    label: load.label,
-                                    location: {
-                                        lat: load.location.lat,
-                                        lng: load.location.lng
-                                    }
-                                }
-
-                            } catch (e) {
+                            if (!load.location || load.location.lat === undefined || load.location.lat === null || load.location.lng === undefined || load.location.lng === null) {
                                 console.error('Invalid location in payload');
                                 return false;
                             }
 
-                            return true;
+                            elem.value = {
+                                label: load.label,
+                                location: {
+                                    lat: load.location.lat,
+                                    lng: load.location.lng
+                                }
+                            }
+
+                        } catch (e) {
+                            console.error('Invalid location in payload');
+                            return false;
                         }
-                    } else return true
+                    }
+
+                    return true;
                 })
                 .forEach((elem) => body[elem.name] = elem.value);
 

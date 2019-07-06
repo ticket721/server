@@ -7,7 +7,90 @@ const EthSigUtil = require('eth-sig-util');
  * @description: A set of functions called "actions" for managing `Event`.
  */
 
+const sort_types = ['start'];
+
 module.exports = {
+
+    countAllIncoming: async (ctx, next, {populate} = {}) => {
+
+        const count = await Event.query(
+            qb => {
+                if (!ctx.query.name) {
+                    qb.whereNotNull('start');
+                    qb.where('start', '>', new Date(Date.now()));
+                }
+
+                if (ctx.query.marketplace === 'true') {
+                    qb.whereExists(function() {
+                        this
+                            .select('*')
+                            .from('sale')
+                            .whereRaw('sale.event = event.id')
+                            .andWhereRaw('sale.live IS NOT null')
+                    })
+                }
+
+                if (ctx.query.name) {
+                    qb.whereRaw(`similarity('${ctx.query.name}', name) > 0.2`);
+                }
+
+            }
+        ).count();
+
+        return count;
+    },
+
+    findAllIncoming: async (ctx, next, {populate} = {}) => {
+
+        const withRelated = populate || Event.associations
+            .filter(ast => ast.autoPopulate !== false)
+            .map(ast => ast.alias);
+
+        const sort = ctx.query.sort;
+
+        if (sort_types.indexOf(sort) === -1) {
+            return ctx.response.badRequest(`Invalid sort value: ${ctx.query.sort}`);
+        }
+
+        let limit = ctx.query.limit;
+
+        if (limit >= 12) {
+            limit = 12;
+        }
+
+        let offset = ctx.query.offset;
+
+        const events = await Event.query(
+            qb => {
+                if (!ctx.query.name) {
+                    qb.whereNotNull('start');
+                    qb.where('start', '>', new Date(Date.now()));
+                }
+
+                if (ctx.query.marketplace === 'true') {
+                    qb.whereExists(function() {
+                        this
+                            .select('*')
+                            .from('sale')
+                            .whereRaw('sale.event = event.id')
+                            .andWhereRaw('sale.live IS NOT null')
+                    })
+                }
+
+                if (ctx.query.name) {
+                    qb.whereRaw(`similarity('${ctx.query.name}', name) > 0.2`);
+                    qb.orderByRaw(`similarity('${ctx.query.name}', name) DESC`);
+                }
+
+                qb.orderBy(sort, 'asc');
+
+                qb.offset(offset);
+                qb.limit(limit);
+            }
+        ).fetchAll({withRelated});
+
+        return events;
+    },
 
     /**
      * Retrieve event records.
@@ -105,50 +188,43 @@ module.exports = {
             const body = {};
             edit_body
                 .filter((elem) => ignored_fields.indexOf(elem.name) === -1)
+                .filter((elem) => (elem.value !== 'none'))
                 .filter((elem) => {
                     if (['start', 'end'].indexOf(elem.name) !== -1) {
-                        if (elem.value === 'none') {
-                           return false;
-                        } else {
-                            elem.value = new Date(parseInt(elem.value));
-                            return true;
-                        }
-                    } else return true
+                        elem.value = new Date(parseInt(elem.value));
+                    }
+                    return true;
                 })
                 .filter((elem) => {
                     if (['location'].indexOf(elem.name) !== -1) {
-                        if (elem.value === 'none') {
-                            return false;
-                        } else {
-                            try {
-                                const load = JSON.parse(elem.value);
+                        try {
+                            const load = JSON.parse(elem.value);
 
-                                if (!load.label || typeof load.label !== 'string') {
-                                    console.error('Invalid location label in payload');
-                                    return false;
-                                }
+                            if (!load.label || typeof load.label !== 'string') {
+                                console.error('Invalid location label in payload');
+                                return false;
+                            }
 
-                                if (!load.location || load.location.lat === undefined || load.location.lat === null || load.location.lng === undefined || load.location.lng === null) {
-                                    console.error('Invalid location in payload');
-                                    return false;
-                                }
-
-                                elem.value = {
-                                    label: load.label,
-                                    location: {
-                                        lat: load.location.lat,
-                                        lng: load.location.lng
-                                    }
-                                }
-
-                            } catch (e) {
+                            if (!load.location || load.location.lat === undefined || load.location.lat === null || load.location.lng === undefined || load.location.lng === null) {
                                 console.error('Invalid location in payload');
                                 return false;
                             }
 
-                            return true;
+                            elem.value = {
+                                label: load.label,
+                                location: {
+                                    lat: load.location.lat,
+                                    lng: load.location.lng
+                                }
+                            }
+
+                        } catch (e) {
+                            console.error('Invalid location in payload');
+                            return false;
                         }
-                    } else return true
+                    }
+
+                    return true;
                 })
                 .forEach((elem) => body[elem.name] = elem.value);
 
