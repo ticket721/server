@@ -1,4 +1,4 @@
-import { keccak256 }   from 'js-sha3';
+import { keccak_256 }   from 'js-sha3';
 import { EVMEventModel } from '../models';
 
 export const available = async (hash: string): Promise<boolean> => {
@@ -18,4 +18,4 @@ export const register = async (hash: string): Promise<void> => {
 };
 
 export const signature = (raw: string[], event: string, tx_hash: string, log_idx: number): string =>
-    keccak256(`${event}:${raw.join()}:${tx_hash}:${log_idx}`);
+    keccak_256(`${event}:${raw.join()}:${tx_hash}:${log_idx}`);
