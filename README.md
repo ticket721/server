@@ -93,3 +93,17 @@ env T721_SERVER=development gulp server:clean
 
 All these variables are used in `build.sh` and `publish.js`
 
+## Enabling autofunding
+
+After server is started, go to the admin interface and add fields to the `extraconfig` field of the `network` model.
+
+```
+{
+  "autofund": true,
+  "funding_account": "0xabc...",
+  "funding_account_mnemonic": "classic wallet mnemonic"
+}
+```
+
+And this account will send 5 Eth on every setWallet call.
+
