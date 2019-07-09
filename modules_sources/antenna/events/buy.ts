@@ -1,7 +1,5 @@
 import * as Signale                       from 'signale';
 import { ActionModel, SaleModel }         from '../models';
-import { imitate }                        from 'testdouble';
-import { info }                           from 'ethers/errors';
 import { available, register, signature } from './signature';
 
 export const buy_fetch_call = async (T721: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
