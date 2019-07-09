@@ -545,6 +545,9 @@
           "node_connection_protocol": {
             "type": "string",
             "default": ""
+          },
+          "extraconfig": {
+            "type": "json"
           }
         }
       },
@@ -581,6 +584,9 @@
           "node_connection_protocol": {
             "type": "string",
             "default": ""
+          },
+          "extraconfig": {
+            "type": "json"
           }
         }
       }

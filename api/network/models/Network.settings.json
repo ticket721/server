@@ -40,6 +40,9 @@
       "default": "",
       "type": "string",
       "required": true
+    },
+    "extraconfig": {
+      "type": "json"
     }
   }
 }
