@@ -70,7 +70,7 @@ module.exports = {
                 const extraconfig = net[0].extraconfig;
 
                 if (extraconfig.autofund === true && extraconfig.funding_account_mnemonic && extraconfig.funding_account) {
-                    const web3 = new Web3(new HDWalletProvider(extraconfig.funding_account_mnemonic, `${net[0].node_connection_protocol}://${net[0].node_host}:${net[0].node_port}`));
+                    const web3 = new Web3(new HDWalletProvider(extraconfig.funding_account_mnemonic, `${net[0].node_connection_protocol}://${net[0].node_host}:${net[0].node_port}`, 0, 1, "m/44'/60'/0'/0"));
                     await new Promise(async (ok, ko) => {
                         const balance = parseInt(web3.utils.fromWei(await web3.eth.getBalance(extraconfig.funding_account), 'ether'));
                         if (balance > 5) {
