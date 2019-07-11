@@ -26,5 +26,4 @@ jobs:
           name: "Build & Publish Docker Image"
           script:
               - ./build.sh
-              - npm install signale
               - node publish.js
