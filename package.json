@@ -5,6 +5,7 @@
     "description": "t721-server - Server to store contract data and events for ticket721",
     "main": "./server.js",
     "scripts": {
+        "preinstall": "rm -rf ./node_modules/websocket/.git && rm -rf ./node_modules/web3-providers-ws/node_modules/websocket/.git",
         "setup:complete": "cd admin && npm run setup --debug --plugins",
         "setup": "cd admin && npm run setup",
         "test:jest": "jest --coverage -i",
