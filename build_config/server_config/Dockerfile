@@ -13,10 +13,6 @@ ENV T721_SERVER=$server_mode
 
 RUN apt-get update && apt-get install -y libgl1-mesa-glx && apt-get clean
 
-# Garbage solution
-RUN rm -rf /usr/src/server/node_modules/websocket/.git
-RUN rm -rf /usr/src/server/node_modules/web3-providers-ws/node_modules/websocket/.git
-
 RUN npm run setup --plugins --debug
 RUN gulp server:setup
 CMD gulp server:start
