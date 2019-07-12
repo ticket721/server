@@ -14,7 +14,7 @@ export const MarketerTester = async (sale: any, event: any, sale_contract_type: 
 
             const ether_price = new PriceModel({
                 currency: 'ether',
-                value: price,
+                value: price.toString(),
                 sale: sale.id
             });
 

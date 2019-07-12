@@ -14,7 +14,7 @@ export const MarketerDirectSale = async (sale: any, event: any, sale_contract_ty
 
             const ether_price = new PriceModel({
                 currency: 'ether',
-                value: price,
+                value: price.toString(),
                 sale: sale.id
             });
 
