@@ -1,7 +1,7 @@
 {
     "name": "@ticket721/server-modules",
     "private": true,
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "t721-server-modules - Modules to manage the server's database x eth synchronization",
     "main": "./server.js",
     "scripts": {
