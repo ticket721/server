@@ -5,6 +5,7 @@ ARG server_mode
 WORKDIR /usr/src/server
 COPY ./ ./
 
+RUN npm run preinstall
 RUN npm install
 RUN npm run postinstall
 RUN npm install -g gulp
