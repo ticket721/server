@@ -1,5 +1,6 @@
-import * as Signale                       from 'signale';
-import { available, register, signature } from './signature';
+import * as Signale                                    from 'signale';
+import { available, register_tx, signature } from './signature';
+import { BS }                                          from '../models';
 
 export const new_admin_fetch_call = async (AdministrationBoard: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
     await Promise.all(
@@ -35,11 +36,21 @@ export async function new_admin_bridge_action(db_by: any, db_to: any, id: number
         return ;
     }
 
-    db_to.set('admin', true);
+    await BS.transaction(async (t: any) => {
+        db_to.set('admin', true);
 
-    await db_to.save();
+        await db_to.save(null, {transacting: t});
 
-    await register(infos.event_signature);
+        await register_tx(infos.event_signature, t);
+    })
+        .then((): void => {
+            Signale.success(`[evm-events][new_admin] address: ${db_to.attributes.address} block: ${block}`);
+        })
+        .catch((e: Error): void => {
+            Signale.error(`[evm-events][new_admin] address: ${db_to.attributes.address} block: ${block}`);
+            Signale.error(e);
+            throw e; // Not sure about this one => should we make it restart until it passes ?
+        });
 
     return ;
 }

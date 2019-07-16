@@ -1,7 +1,7 @@
 import * as Signale from 'signale';
 
-import { ActionModel, SaleModel }         from '../models';
-import { available, register, signature } from './signature';
+import { ActionModel, BS, SaleModel }                  from '../models';
+import { available, register_tx, signature } from './signature';
 
 export const sale_close_fetch_call = async (T721: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
     await Promise.all(
@@ -38,31 +38,43 @@ export async function sale_close_bridge_action(db_by: any, db_to: any, id: numbe
         return ;
     }
 
-    const {db_id}: { db_id: any; } = await this.ticket_check(id);
-    const action = new ActionModel({
-        by: db_by.id,
-        to: db_to.id,
-        on_ticket: db_id.id,
-        action_type: 'sale_close',
-        infos: infos,
-        block: block,
-        tx_hash: infos.tx_hash,
-        action_timestamp: new Date(infos.event_timestamp * 1000)
-    });
+    await BS.transaction(async (t: any) => {
 
-    await action.save();
+        const {db_id}: { db_id: any; } = await this.ticket_check(id, t);
+        const action = new ActionModel({
+            by: db_by.id,
+            to: db_to.id,
+            on_ticket: db_id.id,
+            action_type: 'sale_close',
+            infos: infos,
+            block: block,
+            tx_hash: infos.tx_hash,
+            action_timestamp: new Date(infos.event_timestamp * 1000)
+        });
 
-    const sale = await SaleModel.where({ticket: db_id.id, status: 'open'}).fetch();
-    sale.set({
-        end: new Date(infos.end * 1000),
-        status: 'closed',
-        live: null
-    });
-    await sale.save();
-    db_id.set('current_sale', null);
-    await db_id.save();
+        await action.save(null, {transacting: t});
 
-    await register(infos.event_signature);
+        const sale = await SaleModel.where({ticket: db_id.id, status: 'open'}).fetch();
+        sale.set({
+            end: new Date(infos.end * 1000),
+            status: 'closed',
+            live: null
+        });
+        await sale.save(null, {transacting: t});
+        db_id.set('current_sale', null);
+        await db_id.save(null, {transacting: t});
+
+        await register_tx(infos.event_signature, t);
+
+    })
+        .then((): void => {
+            Signale.success(`[evm-events][sale_close] by: ${db_by.attributes.address} to: ${db_to.attributes.address} id: ${id} block: ${block}`);
+        })
+        .catch((e: Error): void => {
+            Signale.error(`[evm-events][sale_close] by: ${db_by.attributes.address} to: ${db_to.attributes.address} id: ${id} block: ${block}`);
+            Signale.error(e);
+            throw e; // Not sure about this one => should we make it restart until it passes ?
+        });
 
     return;
 
