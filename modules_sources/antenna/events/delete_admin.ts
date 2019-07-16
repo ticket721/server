@@ -1,5 +1,6 @@
-import * as Signale                       from 'signale';
-import { available, register, signature } from './signature';
+import * as Signale                                    from 'signale';
+import { available, register_tx, signature } from './signature';
+import { BS }                                          from '../models';
 
 export const delete_admin_fetch_call = async (AdministrationBoard: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
     await Promise.all(
@@ -35,11 +36,22 @@ export async function delete_admin_bridge_action(db_by: any, db_to: any, id: num
         return ;
     }
 
-    db_to.set('admin', false);
+    await BS.transaction(async (t: any) => {
 
-    await db_to.save();
+        db_to.set('admin', false);
+        await db_to.save(null, {transacting: t});
 
-    await register(infos.event_signature);
+        await register_tx(infos.event_signature, t);
+
+    })
+        .then((): void => {
+            Signale.success(`[evm-events][delete_admin] address: ${db_to.attributes.address} block: ${block}`);
+        })
+        .catch((e: Error): void => {
+            Signale.error(`[evm-events][delete_admin] address: ${db_to.attributes.address} block: ${block}`);
+            Signale.error(e);
+            throw e; // Not sure about this one => should we make it restart until it passes ?
+        });
 
     return ;
 

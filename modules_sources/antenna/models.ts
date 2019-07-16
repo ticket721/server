@@ -16,10 +16,12 @@ export let ApproverModel = null;
 export let UploadFileModel = null;
 export let UploadFileMorphModel = null;
 export let EVMEventModel = null;
+export let BS = null;
 
 export const init = (knex: Knex): void => {
 
     const bs: any = Bookshelf(knex);
+    BS = bs;
 
     bs.plugin('registry');
 

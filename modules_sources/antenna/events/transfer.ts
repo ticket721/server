@@ -1,7 +1,7 @@
 import * as Signale from 'signale';
 
-import { ActionModel }                    from '../models';
-import { available, register, signature } from './signature';
+import { ActionModel, BS }                             from '../models';
+import { available, register_tx, signature } from './signature';
 
 export const transfer_fetch_call = async (T721: any, block_fetcher: any, begin: number, end: number): Promise<any> =>
     await Promise.all(
@@ -37,25 +37,41 @@ export async function transfer_bridge_action(db_by: any, db_to: any, id: number,
         return ;
     }
 
-    const {db_id}: { db_id: any; } = await this.ticket_check(id);
-    const action = new ActionModel({
-        by: db_by.id,
-        to: db_to.id,
-        on_ticket: db_id.id,
-        action_type: 'transfer',
-        infos: infos,
-        block: block,
-        tx_hash: infos.tx_hash,
-        action_timestamp: new Date(infos.event_timestamp * 1000)
-    });
-    await action.save();
+    await BS.transaction(async (t: any) => {
 
-    db_id.set({
-        owner: db_to.id
-    });
-    await db_id.save();
+        try {
+            const {db_id}: { db_id: any; } = await this.ticket_check(id, t);
+            const action = new ActionModel({
+                by: db_by.id,
+                to: db_to.id,
+                on_ticket: db_id.id,
+                action_type: 'transfer',
+                infos: infos,
+                block: block,
+                tx_hash: infos.tx_hash,
+                action_timestamp: new Date(infos.event_timestamp * 1000)
+            });
+            await action.save(null, {transacting: t});
 
-    await register(infos.event_signature);
+            db_id.set({
+                owner: db_to.id
+            });
+            await db_id.save(null, {transacting: t});
+
+            await register_tx(infos.event_signature, t);
+        } catch (e) {
+            this.revertTransaction(t);
+            throw e;
+        }
+    })
+        .then((): void => {
+            Signale.success(`[evm-events][transfer] by: ${db_by.attributes.address} to: ${db_to.attributes.address} id: ${id} block: ${block}`);
+        })
+        .catch((e: Error): void => {
+            Signale.error(`[evm-events][transfer] by: ${db_by.attributes.address} to: ${db_to.attributes.address} id: ${id} block: ${block}`);
+            Signale.error(e);
+            throw e; // Not sure about this one => should we make it restart until it passes ?
+        });
 
     return;
 

@@ -114,14 +114,14 @@ export class EventBridge {
      * Checks if given id has a model, creates it if not
      * @param id
      */
-    private async ticket_check(id: number): Promise<{ db_id: any; }> {
+    private async ticket_check(id: number, t?: any): Promise<{ db_id: any; }> {
 
         let db_id = await TicketModel.where({ticket_id: id}).fetch();
 
         if (db_id === null) {
             db_id = new TicketModel({ticket_id: id, owner: null});
             try {
-                await db_id.save();
+                await db_id.save(null, {transacting: t});
             } catch (e) {
                 throw new Error(`Unable to insert new ticket into store: ${id}`);
             }
